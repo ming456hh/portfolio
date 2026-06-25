@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3-PRS 并联雕刻机器人 — 陈明 嵌入式开发</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#1a365d',accent:'#2563eb','accent-hover':'#1d4ed8'}}}}</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">&lt;<span class="text-blue-400">Portfolio</span>/&gt;</a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto">
+      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-4"><a href="projects.html" class="hover:text-white transition-colors">← 返回项目列表</a></nav>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">3-PRS 并联雕刻机器人</h1>
+      <p class="text-blue-200 text-sm sm:text-base max-w-2xl">采用 3-PRS 三平移并联构型，完成运动学建模与反解推导，结合 OpenCV 视觉自动生成雕刻路径，STM32 三轴 PWM 同步控制</p>
+      <div class="flex flex-wrap gap-2 mt-5">
+        <span class="tech-tag text-sm">STM32</span><span class="tech-tag text-sm">运动学反解</span><span class="tech-tag text-sm">OpenCV</span><span class="tech-tag text-sm">PWM 同步</span><span class="tech-tag text-sm">SolidWorks</span><span class="tech-tag text-sm">MATLAB</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 space-y-16">
+
+    <!-- 1. 项目背景 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目背景与需求</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <p class="mb-4">本项目来自<strong>机器人创新实验室</strong>（2025.12-2026.01），目标是开发一款三自由度并联雕刻机器人。采用 3-PRS（Prismatic-Revolute-Spherical）三平移并联构型，相比传统串联机械臂具有刚度高、精度好、负载能力强等优势。系统整合了运动学建模、OpenCV 视觉路径规划和 STM32 多轴同步控制。</p>
+        <h4 class="font-semibold text-slate-800 mb-2 mt-5">功能需求</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>完成 3-PRS 并联机构运动学正解与反解数学模型推导</li>
+          <li>OpenCV 对雕刻图案进行预处理、轮廓提取、像素-世界坐标标定</li>
+          <li>自动生成雕刻路径（G-code 风格坐标序列）</li>
+          <li>STM32 三轴 PWM 同步输出，结合脉冲计数闭环实现精确位置控制</li>
+          <li>MATLAB 仿真验证运动学模型正确性</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. 系统架构 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">2</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">系统架构 / 硬件框图</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <p class="text-slate-600 mb-5 leading-relaxed">系统分为三大子系统：SolidWorks 机械结构设计 → OpenCV 视觉路径规划 → STM32 运动控制执行。MATLAB 用于运动学模型的仿真验证：</p>
+        <div class="img-placeholder"><span>📷 系统架构图 / SolidWorks 3D 模型 / 运动学简图<br><small>（请替换为实际图片）</small></span></div>
+        <h4 class="font-semibold text-slate-800 mt-6 mb-3">关键硬件资源</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead><tr class="bg-slate-50"><th class="border border-slate-200 px-4 py-2 text-left font-semibold">外设/模块</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">接口</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">用途</th></tr></thead>
+            <tbody class="text-slate-600">
+              <tr><td class="border border-slate-200 px-4 py-2">STM32</td><td class="border border-slate-200 px-4 py-2">—</td><td class="border border-slate-200 px-4 py-2">主控，运动控制核心</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">步进电机 ×3</td><td class="border border-slate-200 px-4 py-2">PWM + DIR</td><td class="border border-slate-200 px-4 py-2">驱动三条 PRS 支链</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">限位开关 ×3</td><td class="border border-slate-200 px-4 py-2">GPIO 中断</td><td class="border border-slate-200 px-4 py-2">零点归位</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">USB 摄像头</td><td class="border border-slate-200 px-4 py-2">USB (PC)</td><td class="border border-slate-200 px-4 py-2">雕刻图案采集</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">PC 上位机</td><td class="border border-slate-200 px-4 py-2">UART</td><td class="border border-slate-200 px-4 py-2">OpenCV 处理 + 路径下发</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 核心实现 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">3</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">核心实现思路与技术亮点</h2></div>
+
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3-PRS 运动学建模与反解</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">3-PRS 并联机构由三条完全相同的 PRS 支链连接动平台与定平台，每条支链包含一个移动副(P)、一个转动副(R)、一个球铰(S)。反解即已知末端坐标 (x, y, z)，求解三条支链的驱动位移 (d₁, d₂, d₃)。</p>
+        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+          <li>建立定平台与动平台的坐标系变换关系</li>
+          <li>利用约束方程（各支链的几何长度不变）推导反解公式</li>
+          <li>MATLAB 仿真验证：工作空间分析 + 反解精度验证</li>
+          <li>末端坐标 → 三杆长度的映射在 STM32 中查表实现，避免浮点运算开销</li>
+        </ul>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">OpenCV 视觉路径自动生成</h3>
+        <div class="space-y-4 text-slate-600">
+          <div><span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">图像预处理</span>灰度化 → 高斯滤波 → 自适应阈值二值化 → 形态学开闭运算去噪。</div>
+          <div><span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">轮廓提取</span>findContours 提取雕刻路径轮廓，approxPolyDP 多边形逼近平滑路径。</div>
+          <div><span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">坐标标定</span>棋盘格标定法建立像素坐标系 → 世界坐标系的映射，输出毫米级坐标序列。</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">STM32 三轴同步运动控制</h3>
+        <div class="space-y-4 text-slate-600">
+          <div><span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">PWM 脉冲</span>TIM1 三通道 PWM 分别驱动三轴步进电机，频率决定速度、脉冲数决定位移。</div>
+          <div><span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">脉冲计数闭环</span>TIM2 编码器模式计数各轴脉冲，与目标值比对实现位置闭环。</div>
+          <div><span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">同步插补</span>根据路径点间的距离比例分配各轴脉冲频率，实现三轴线性插补同步运动。</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 难点与方案 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm">4</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">遇到的难点与解决方案</h2></div>
+      <div class="space-y-6">
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 1：3-PRS 反解公式推导复杂</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>3-PRS 并联机构的约束方程涉及多变量耦合，手工推导易出错</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>解决：</strong>利用 MATLAB 符号计算工具箱进行解析推导，自动生成 C 代码嵌入 STM32。建立 Simulink 仿真模型验证反解精度，工作空间内误差 &lt;0.1mm。</p>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 2：三轴同步性差导致雕刻路径变形</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>复杂曲线雕刻时路径与预期偏差明显，圆弧变形为多边形</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析：</strong>三轴各自独立发送脉冲，无插补同步机制。当路径方向变化时，各轴速度不匹配导致轨迹偏离。</p>
+            <p><strong>解决：</strong>实现简单线性插补：路径分段后，根据三轴位移比例在定时器中同步更新 PWM 频率。将路径点间距从 1mm 加密到 0.1mm，配合更高脉冲分辨率，轨迹精度显著提升。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 实物演示 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">5</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">实物演示</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-semibold text-slate-800 mb-4">实物照片</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="img-placeholder rounded-lg"><span>📷 整机实物照片<br><small>（请替换 src）</small></span></div>
+          <div class="img-placeholder rounded-lg"><span>📷 雕刻作品样例<br><small>（请替换 src）</small></span></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-800 mb-4">运行演示视频</h3>
+        <div class="video-placeholder rounded-lg"><span class="flex flex-col items-center gap-2"><svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>🎬 雕刻过程演示</span></span></div>
+      </div>
+    </section>
+
+    <!-- 6. 关键代码 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">6</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">关键代码片段</h2></div>
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 kinematics.c — 3-PRS 运动学反解</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">C</span>
+<code>/* 3-PRS 并联机构运动学反解：末端坐标 → 三杆长度 */
+#define R_BASE    50.0f   // 定平台半径 (mm)
+#define R_PLAT    30.0f   // 动平台半径 (mm)
+#define L_ARM     120.0f  // 连杆长度 (mm)
+
+typedef struct {
+    float x, y, z;    // 末端坐标 (mm)
+} EndEffector_t;
+
+typedef struct {
+    float d[3];       // 三杆驱动位移 (mm)
+} JointSpace_t;
+
+void IK_Solve(EndEffector_t *ee, JointSpace_t *js)
+{
+    // 3-PRS 反解：每条支链的几何约束
+    // |P_i + d_i * u_i - (ee + R * p_i)| = L_ARM
+    for (int i = 0; i < 3; i++) {
+        // 支链 i 在定平台上的安装角
+        float theta = i * 2.0f * PI / 3.0f;
+
+        // 定平台连接点坐标
+        float Bx = R_BASE * cos(theta);
+        float By = R_BASE * sin(theta);
+
+        // 动平台连接点（考虑末端偏移）
+        float Px = ee->x + R_PLAT * cos(theta);
+        float Py = ee->y + R_PLAT * sin(theta);
+
+        // 几何约束方程 → 求解 d_i
+        float dx = Px - Bx;
+        float dy = Py - By;
+        float dz = ee->z;
+
+        // d_i = z ± sqrt(L² - dx² - dy²)
+        float disc = L_ARM*L_ARM - dx*dx - dy*dy;
+        if (disc < 0) disc = 0;  // 奇异点保护
+        js->d[i] = dz - sqrt(disc);
+    }
+}</code></div>
+      </div>
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 path_planner.py — OpenCV 路径生成 (Python)</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">Python</span>
+<code># OpenCV 雕刻路径自动生成
+import cv2
+import numpy as np
+
+def generate_path(image_path, scale_mm_per_px):
+    # 读取图像 → 预处理
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    _, thresh = cv2.threshold(blur, 0, 255,
+        cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+    # 轮廓提取
+    contours, _ = cv2.findContours(
+        thresh, cv2.RETR_EXTERNAL,
+        cv2.CHAIN_APPROX_SIMPLE)
+
+    # 多边形逼近 → 平滑路径点
+    path_points = []
+    for cnt in contours:
+        epsilon = 0.001 * cv2.arcLength(cnt, True)
+        approx = cv2.approxPolyDP(cnt, epsilon, True)
+        for pt in approx:
+            x_mm = pt[0][0] * scale_mm_per_px
+            y_mm = pt[0][1] * scale_mm_per_px
+            path_points.append((x_mm, y_mm, 1.0))  # z=1mm 雕刻深度
+
+    # 输出 G-code 风格坐标序列
+    return path_points</code></div>
+      </div>
+    </section>
+
+    <!-- 7. 总结 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">7</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目总结与个人收获</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <h4 class="font-semibold text-slate-800 mb-3">项目成果</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>完成 3-PRS 运动学正解/反解推导与 MATLAB 仿真验证，反解精度 &lt;0.1mm</li>
+          <li>OpenCV 自动路径生成，支持任意黑白图案的雕刻路径提取</li>
+          <li>STM32 三轴同步插补控制，雕刻轨迹精度满足要求</li>
+        </ul>
+        <h4 class="font-semibold text-slate-800 mb-3">个人收获</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>深入理解并联机器人运动学原理和正反解计算方法</li>
+          <li>掌握 OpenCV 图像处理全流程：预处理 → 特征提取 → 坐标标定</li>
+          <li>学会多轴同步运动控制与线性插补算法</li>
+          <li>积累了 SolidWorks 3D 建模 → MATLAB 仿真 → STM32 控制的全栈开发经验</li>
+        </ul>
+        <h4 class="font-semibold text-slate-800 mb-3">后续改进方向</h4>
+        <ul class="list-disc list-inside space-y-2">
+          <li>实现圆弧插补和速度前瞻 (Look-ahead) 提升雕刻效率</li>
+          <li>增加力传感器实现恒力雕刻</li>
+        </ul>
+      </div>
+    </section>
+
+    <div class="flex items-center justify-between pt-4 border-t border-slate-200 fade-in">
+      <a href="projects.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>返回项目列表</a>
+    </div>
+  </main>
+
+  <footer class="site-footer py-8 px-4 text-center"><p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p></footer>
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg></button>
+  <script src="js/main.js"></script>
+</body>
+</html>

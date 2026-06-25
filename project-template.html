@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="项目详情">
+  <title>项目详情 — 嵌入式开发实习生</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            accent: '#2563eb',
+            'accent-hover': '#1d4ed8',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!--
+    ============================================================
+    项目详情模板 — 复制此文件并重命名即可创建新项目页
+    所有标注 "替换为" 的地方需要按实际项目修改
+    图片/视频区域已预留 &lt;img&gt; / &lt;video&gt; 标签，替换 src 即可
+    ============================================================
+  -->
+
+  <!-- ========== 导航栏 ========== -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">
+          &lt;<span class="text-blue-400">Portfolio</span>/&gt;
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- ========== 项目 Hero 头部 ========== -->
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto">
+      <!-- 面包屑 -->
+      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-4">
+        <a href="projects.html" class="hover:text-white transition-colors">← 返回项目列表</a>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+        <!-- ⬇️ 替换为实际项目名称 -->
+        项目名称
+      </h1>
+      <p class="text-blue-200 text-sm sm:text-base max-w-2xl">
+        <!-- ⬇️ 替换为实际一句话概述 -->
+        本项目的一句话概述，说明项目的核心功能和价值
+      </p>
+      <div class="flex flex-wrap gap-2 mt-5">
+        <!-- ⬇️ 替换为实际技术栈标签 -->
+        <span class="tech-tag text-sm">STM32F407</span>
+        <span class="tech-tag text-sm">FreeRTOS</span>
+        <span class="tech-tag text-sm">I²C</span>
+        <span class="tech-tag text-sm">UART</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 主体内容 ========== -->
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 space-y-16">
+
+    <!-- ━━━━━ 1. 项目背景与需求 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目背景与需求</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <!-- ⬇️ 替换为实际项目背景 -->
+        <p class="mb-4">
+          本项目来源于<strong>（课题/竞赛/个人兴趣）</strong>，旨在解决<strong>（具体问题）</strong>。
+          目标平台为 STM32F4 系列 MCU，运行 FreeRTOS 实时操作系统，实现<strong>（核心功能描述）</strong>。
+        </p>
+        <h4 class="font-semibold text-slate-800 mb-2 mt-5">功能需求清单</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>需求 1：例如多传感器数据并行采集，采样率 ≥ 100Hz</li>
+          <li>需求 2：例如 OLED 屏幕实时刷新显示，响应延迟 &lt; 50ms</li>
+          <li>需求 3：例如通过 UART 接收上位机指令并解析执行</li>
+          <li>需求 4：例如系统运行稳定性 ≥ 72 小时无死机</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 2. 系统架构 / 硬件框图 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">2</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">系统架构 / 硬件框图</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <p class="text-slate-600 mb-5 leading-relaxed">
+          整体系统由 MCU 主控模块、传感器采集模块、通信模块、显示模块和电源模块组成。以下为系统硬件连接框图：
+        </p>
+
+        <!-- ⬇️ 硬件框图图片 - 替换 src -->
+        <div class="img-placeholder">
+          <!-- 替换为实际图片：<img src="assets/project-x-hardware.png" alt="硬件系统框图" class="max-w-full rounded-lg"> -->
+          <span>📷 硬件系统框图<br><small>（替换 src 插入实际图片）</small></span>
+        </div>
+
+        <!-- 硬件资源表 -->
+        <h4 class="font-semibold text-slate-800 mt-6 mb-3">关键硬件资源</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50">
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">外设/模块</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">接口</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">用途</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-600">
+              <!-- ⬇️ 替换为实际硬件资源 -->
+              <tr><td class="border border-slate-200 px-4 py-2">STM32F407VET6</td><td class="border border-slate-200 px-4 py-2">—</td><td class="border border-slate-200 px-4 py-2">主控 MCU，168MHz</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">BMP280</td><td class="border border-slate-200 px-4 py-2">I²C1</td><td class="border border-slate-200 px-4 py-2">温度/气压传感器</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">MPU6050</td><td class="border border-slate-200 px-4 py-2">I²C1</td><td class="border border-slate-200 px-4 py-2">6 轴姿态传感器</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">OLED 0.96"</td><td class="border border-slate-200 px-4 py-2">I²C2</td><td class="border border-slate-200 px-4 py-2">数据显示</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">HC-05 蓝牙模块</td><td class="border border-slate-200 px-4 py-2">UART2</td><td class="border border-slate-200 px-4 py-2">无线通信</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 3. 核心实现思路 & 技术亮点 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">3</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">核心实现思路与技术亮点</h2>
+      </div>
+
+      <!-- 3.1 整体软件架构 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.1 软件架构设计</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">
+          <!-- ⬇️ 替换为实际架构描述 -->
+          软件基于 FreeRTOS 多任务架构，划分为 4 个核心任务：传感器采集任务（高优先级）、数据处理任务、显示刷新任务、通信任务。
+          任务间通过消息队列传递传感器数据，使用二值信号量同步 OLED 刷新时机。
+        </p>
+        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+          <li>采集任务优先级最高（prio=3），确保传感器数据不丢帧</li>
+          <li>显示任务优先级最低（prio=1），利用空闲时间刷新屏幕</li>
+          <li>使用 FreeRTOS 软件定时器实现 100Hz 周期性采样触发</li>
+        </ul>
+      </div>
+
+      <!-- 3.2 FreeRTOS 技术亮点 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.2 FreeRTOS 关键技术点</h3>
+        <div class="space-y-4 text-slate-600">
+          <!-- ⬇️ 替换为实际 FreeRTOS 亮点 -->
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">任务同步</span>
+            使用二值信号量实现采集完成 → 数据处理 → 显示刷新的流水线同步，避免数据竞争。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">消息队列</span>
+            创建长度为 10 的消息队列缓冲传感器数据，采集任务写入、处理任务读取，解耦采集与处理速率。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">内存优化</span>
+            通过 FreeRTOS heap_4 管理动态内存，总 RAM 占用控制在 15KB 以内，满足 MCU 资源约束。
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 蓝牙/Linux 等技术亮点 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.3 通信技术亮点</h3>
+        <div class="space-y-4 text-slate-600">
+          <!-- ⬇️ 替换为实际通信技术亮点 -->
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">蓝牙 BLE</span>
+            自定义 GATT Service，定义 3 个 Characteristic 分别用于数据上报、指令下发和设备状态。手机端通过 nRF Connect 调试验证。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">串口协议</span>
+            设计二进制帧协议：帧头 (0xAA 0x55) + 长度 + 命令字 + 数据 + CRC16 校验，支持可变长度数据包传输。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">DMA 传输</span>
+            UART 收发均使用 DMA + 空闲中断方式，释放 CPU 资源，实测在 115200bps 下 CPU 占用率 &lt; 2%。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 4. 难点与解决方案 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm">4</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">遇到的难点与解决方案</h2>
+      </div>
+
+      <div class="space-y-6">
+        <!-- 难点 1 -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 1：多任务并发导致的数据竞争</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>传感器数据偶尔出现乱码或丢失</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>通过逻辑分析仪抓取 I²C 总线时序，发现当显示任务正在读取 OLED 时，采集任务同时触发了传感器读取，导致 I²C 总线仲裁冲突。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>引入互斥锁 (Mutex) 保护 I²C 总线访问，确保同一时刻只有一个任务操作总线</li>
+              <li>将 I²C 操作封装为临界区，在 taskENTER_CRITICAL() 内完成原子操作</li>
+              <li>优化后连续测试 48 小时无误码</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 难点 2 -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 2：蓝牙连接不稳定 / 断连</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>蓝牙模块在运行一段时间后自动断开，需手动复位</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>抓取 UART 通信日志发现，蓝牙模块在连续接收大量数据时会进入缓存溢出状态，导致模块内部看门狗复位。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>在发送端加入流控机制，每次发送后等待 ACK 再发下一帧</li>
+              <li>MCU 端实现蓝牙状态监测任务，心跳超时自动重连</li>
+              <li>加入硬件流控 (RTS/CTS) 接线</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 难点 3（可删减） -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 3：实时显示刷新闪烁问题</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>OLED 屏幕刷新时出现明显闪烁</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>屏幕刷新过程中被其他高优先级任务打断，导致刷屏时序不连续。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>使用双缓冲机制 — 在内存中构建完整显存，一次性 DMA 推送到 OLED</li>
+              <li>将刷屏操作放在空闲钩子函数 (vApplicationIdleHook) 中执行</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 5. 实物演示 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">5</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">实物演示</h2>
+      </div>
+
+      <!-- 图片 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-semibold text-slate-800 mb-4">实物照片</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="img-placeholder rounded-lg">
+            <!-- 替换：<img src="assets/project-x-photo1.jpg" alt="实物正面" class="w-full rounded-lg"> -->
+            <span>📷 实物正面照片<br><small>（替换 src）</small></span>
+          </div>
+          <div class="img-placeholder rounded-lg">
+            <!-- 替换：<img src="assets/project-x-photo2.jpg" alt="PCB 细节" class="w-full rounded-lg"> -->
+            <span>📷 PCB / 接线细节<br><small>（替换 src）</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 视频 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-800 mb-4">运行演示视频</h3>
+        <div class="video-placeholder rounded-lg">
+          <!--
+            替换为实际视频：
+            <video controls class="w-full rounded-lg" poster="assets/video-poster.jpg">
+              <source src="assets/project-x-demo.mp4" type="video/mp4">
+            </video>
+            或嵌入 B站 / YouTube iframe
+          -->
+          <span class="flex flex-col items-center gap-2">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>🎬 运行演示视频<br><small>（替换 src 或嵌入 B站 iframe）</small></span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 6. 关键代码片段 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">6</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">关键代码片段</h2>
+      </div>
+
+      <!-- 代码片段 1：FreeRTOS 任务创建 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+          <span class="text-sm font-semibold text-slate-700">📄 main.c — FreeRTOS 任务创建与启动</span>
+        </div>
+        <div class="code-block rounded-none">
+          <span class="lang-label">C</span>
+          <code>
+/* FreeRTOS 多任务初始化示例 */
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
+
+// 全局句柄
+TaskHandle_t xSensorTaskHandle = NULL;
+TaskHandle_t xDisplayTaskHandle = NULL;
+QueueHandle_t xSensorQueue = NULL;
+SemaphoreHandle_t xI2CMutex = NULL;
+
+int main(void)
+{
+    // 硬件初始化
+    HAL_Init();
+    SystemClock_Config();
+    MX_GPIO_Init();
+    MX_I2C1_Init();
+    MX_USART1_UART_Init();
+
+    // 创建消息队列 (10个元素, 每个24字节)
+    xSensorQueue = xQueueCreate(10, sizeof(SensorData_t));
+
+    // 创建互斥锁保护 I²C 总线
+    xI2CMutex = xSemaphoreCreateMutex();
+
+    // 创建任务
+    xTaskCreate(vSensorTask, "Sensor", 512, NULL, 3, &xSensorTaskHandle);
+    xTaskCreate(vDisplayTask, "Display", 256, NULL, 1, &xDisplayTaskHandle);
+    xTaskCreate(vCommTask, "Comm", 512, NULL, 2, NULL);
+
+    // 启动调度器
+    vTaskStartScheduler();
+
+    while (1);  // 不应执行到这里
+}
+          </code>
+        </div>
+      </div>
+
+      <!-- 代码片段 2：传感器采集任务 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+          <span class="text-sm font-semibold text-slate-700">📄 sensor_task.c — 传感器采集任务</span>
+        </div>
+        <div class="code-block rounded-none">
+          <span class="lang-label">C</span>
+          <code>
+/* 高优先级传感器采集任务 */
+void vSensorTask(void *pvParameters)
+{
+    SensorData_t xSensorData;
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+
+    for (;;)
+    {
+        // 获取 I²C 总线互斥锁
+        if (xSemaphoreTake(xI2CMutex, pdMS_TO_TICKS(50)) == pdTRUE)
+        {
+            // 读取 BMP280 温湿度
+            BMP280_ReadData(&xSensorData.temperature,
+                            &xSensorData.pressure);
+
+            // 读取 MPU6050 姿态数据
+            MPU6050_ReadAccel(&xSensorData.accel_x,
+                              &xSensorData.accel_y,
+                              &xSensorData.accel_z);
+
+            xSemaphoreGive(xI2CMutex);
+        }
+
+        // 发送到消息队列 (非阻塞)
+        xQueueSend(xSensorQueue, &xSensorData, 0);
+
+        // 精确延时 10ms → 100Hz 采样率
+        vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(10));
+    }
+}
+          </code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 7. 项目总结与收获 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">7</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目总结与个人收获</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <!-- ⬇️ 替换为实际总结 -->
+        <h4 class="font-semibold text-slate-800 mb-3">项目成果</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>实现了 xxx 功能，达到 xxx 指标</li>
+          <li>系统连续稳定运行测试通过（72 小时无故障）</li>
+          <li>项目获得 xxx 奖项 / 课程评价</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">个人收获</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>深入理解了 FreeRTOS 任务调度机制、优先级反转及解决方案</li>
+          <li>掌握了 I²C/UART 外设调试方法，能独立使用逻辑分析仪定位时序问题</li>
+          <li>学会了在资源受限的 MCU 平台上做内存和 CPU 优化</li>
+          <li>提升了嵌入式系统整体架构设计能力</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">后续改进方向</h4>
+        <ul class="list-disc list-inside space-y-2">
+          <li>引入 FatFS 文件系统，支持将数据记录到 SD 卡</li>
+          <li>移植 LVGL 图形库，升级交互界面</li>
+          <li>增加 OTA 固件升级功能</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 导航：返回 / 上下一项 ━━━━━ -->
+    <div class="flex items-center justify-between pt-4 border-t border-slate-200 fade-in">
+      <a href="projects.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        返回项目列表
+      </a>
+      <!-- ⬇️ 可设置下一项目链接 -->
+      <!-- <a href="project-butterfly.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors">
+        下一个项目
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a> -->
+    </div>
+
+  </main>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="site-footer py-8 px-4 text-center">
+    <p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

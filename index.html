@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="嵌入式开发实习生个人作品集">
+  <title>个人作品集 — 嵌入式开发实习生</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            accent: '#2563eb',
+            'accent-hover': '#1d4ed8',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 自定义样式 -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- 字体预加载 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- ========== 顶部导航栏 ========== -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo / 姓名 -->
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">
+          &lt;<span class="text-blue-400">Portfolio</span>/&gt;
+        </a>
+
+        <!-- 桌面端导航 -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+
+        <!-- 移动端汉堡按钮 -->
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- 移动端菜单 -->
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-blue-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- ========== Hero 区域 ========== -->
+  <section class="hero-section pt-24 pb-16 sm:pt-32 sm:pb-24 px-4">
+    <div class="max-w-4xl mx-auto text-center relative z-10">
+      <!-- 头像占位 -->
+      <div class="w-24 h-24 sm:w-28 sm:h-28 mx-auto mb-6 rounded-full bg-white/10 border-2 border-white/20 flex items-center justify-center text-white/60 text-3xl">
+        <!-- 替换为真实头像：<img src="assets/avatar.jpg" class="w-full h-full rounded-full object-cover"> -->
+        👨‍💻
+      </div>
+
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-3 tracking-tight">
+        陈明
+      </h1>
+      <p class="text-lg sm:text-xl text-blue-200 font-medium mb-2">
+        嵌入式开发实习生
+      </p>
+      <p class="text-sm sm:text-base text-gray-400 max-w-lg mx-auto leading-relaxed">
+        东北林业大学 (211) 机器人工程专业，精通 STM32 外设开发与 FreeRTOS 多任务系统，熟练运用 PID 控制、运动学反解与 OpenCV 视觉处理，具备完整的软硬件联调经验
+      </p>
+
+      <!-- CTA 按钮 -->
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="projects.html"
+           class="inline-block px-8 py-3 bg-accent hover:bg-accent-hover text-white font-semibold rounded-lg transition-colors shadow-lg shadow-blue-600/25">
+          查看项目作品
+        </a>
+        <a href="about.html"
+           class="inline-block px-8 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg border border-white/20 transition-colors">
+          了解更多
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 核心技能 ========== -->
+  <section class="py-16 sm:py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-10 fade-in">
+        <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">核心技能</h2>
+        <p class="text-slate-500 text-sm">Core Technical Skills</p>
+        <div class="w-16 h-1 bg-accent mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 fade-in">
+        <!-- 技能分类卡片 -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">🔧</span>
+            <h3 class="font-semibold text-slate-800">MCU 与 RTOS</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">STM32F103 (ZET6/C8T6)</span>
+            <span class="skill-tag">FreeRTOS</span>
+            <span class="skill-tag">ARM Cortex-M3</span>
+            <span class="skill-tag">中断系统</span>
+            <span class="skill-tag">IWDG 看门狗</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">📡</span>
+            <h3 class="font-semibold text-slate-800">通信与协议</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">I²C</span>
+            <span class="skill-tag">SPI</span>
+            <span class="skill-tag">USART</span>
+            <span class="skill-tag">HC-05/08 蓝牙</span>
+            <span class="skill-tag">环形缓冲区</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">💻</span>
+            <h3 class="font-semibold text-slate-800">编程语言</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">C 语言</span>
+            <span class="skill-tag">C++</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">OpenCV</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">🎮</span>
+            <h3 class="font-semibold text-slate-800">控制与算法</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">PID 控制</span>
+            <span class="skill-tag">互补滤波</span>
+            <span class="skill-tag">运动学反解</span>
+            <span class="skill-tag">状态机设计</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">🛠️</span>
+            <h3 class="font-semibold text-slate-800">硬件与调试</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">PWM 电机驱动</span>
+            <span class="skill-tag">ADC 采样</span>
+            <span class="skill-tag">I²C OLED</span>
+            <span class="skill-tag">Flash 存储</span>
+            <span class="skill-tag">DC-DC 电源</span>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-2xl">📐</span>
+            <h3 class="font-semibold text-slate-800">开发工具</h3>
+          </div>
+          <div class="flex flex-wrap">
+            <span class="skill-tag">Keil MDK</span>
+            <span class="skill-tag">SolidWorks</span>
+            <span class="skill-tag">嘉立创 EDA</span>
+            <span class="skill-tag">MATLAB</span>
+            <span class="skill-tag">CAD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 联系方式 ========== -->
+  <section class="py-16 sm:py-20 px-4 bg-white border-y border-slate-200">
+    <div class="max-w-4xl mx-auto text-center fade-in">
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 mb-3">联系方式</h2>
+      <p class="text-slate-500 text-sm mb-2">Contact</p>
+      <a href="contact.html" class="inline-block text-accent hover:text-accent-hover text-sm font-medium transition-colors mb-3">查看完整联系方式 →</a>
+      <div class="w-16 h-1 bg-accent mx-auto mt-4 rounded-full"></div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
+        <!-- 手机 -->
+        <div class="flex flex-col items-center p-5 rounded-xl bg-slate-50 hover:bg-blue-50 transition-colors">
+          <svg class="w-8 h-8 text-accent mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+          </svg>
+          <span class="text-sm text-slate-500 mb-1">手机</span>
+          <span class="text-slate-800 font-medium">18244439951</span>
+        </div>
+
+        <!-- 邮箱 -->
+        <div class="flex flex-col items-center p-5 rounded-xl bg-slate-50 hover:bg-blue-50 transition-colors">
+          <svg class="w-8 h-8 text-accent mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span class="text-sm text-slate-500 mb-1">邮箱</span>
+          <span class="text-slate-800 font-medium">18244439951@163.com</span>
+        </div>
+
+        <!-- GitHub -->
+        <div class="flex flex-col items-center p-5 rounded-xl bg-slate-50 hover:bg-blue-50 transition-colors">
+          <svg class="w-8 h-8 text-accent mb-3" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span class="text-sm text-slate-500 mb-1">GitHub</span>
+          <a href="https://github.com/your-username" target="_blank" rel="noopener"
+             class="text-accent hover:underline font-medium text-sm">github.com/your-username</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="site-footer py-8 px-4 text-center">
+    <p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p>
+  </footer>
+
+  <!-- 回到顶部 -->
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <!-- JS -->
+  <script src="js/main.js"></script>
+</body>
+</html>

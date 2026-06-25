@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="嵌入式项目作品集">
+  <title>项目作品 — 嵌入式开发实习生</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            accent: '#2563eb',
+            'accent-hover': '#1d4ed8',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- ========== 导航栏 ========== -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">
+          &lt;<span class="text-blue-400">Portfolio</span>/&gt;
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-blue-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- ========== 页面标题 ========== -->
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">项目作品</h1>
+      <p class="text-gray-400 text-sm">Embedded System Projects</p>
+      <div class="w-16 h-1 bg-accent mx-auto mt-4 rounded-full"></div>
+    </div>
+  </section>
+
+  <!-- ========== 项目卡片列表 ========== -->
+  <section class="py-12 sm:py-16 px-4">
+    <div class="max-w-5xl mx-auto">
+
+      <!--
+        ============================================
+        项目卡片模板 — 复制以下 .project-card 块即可新增项目
+        每个卡片包含：名称 | 概述 | 技术栈标签 | 详情链接
+        ============================================
+      -->
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+
+        <!-- ───── 项目 1: FreeRTOS 智能窗户温控系统 ───── -->
+        <div class="project-card fade-in">
+          <div class="card-accent-bar"></div>
+          <div class="p-6">
+            <div class="w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center text-2xl mb-4">
+              🌡️
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">
+              FreeRTOS 智能窗户温控系统
+            </h3>
+            <p class="text-sm text-slate-500 mb-4 leading-relaxed">
+              STM32F103 + FreeRTOS 双任务架构，整合 DHT22/OLED/蓝牙/舵机 7 大模块，4°C 滞回自动温控 + 手机蓝牙 AT 指令双模控制，配套 C++ 上位机
+            </p>
+            <div class="mb-5">
+              <span class="tech-tag">STM32F103</span>
+              <span class="tech-tag">FreeRTOS</span>
+              <span class="tech-tag">DHT22</span>
+              <span class="tech-tag">HC-08 蓝牙</span>
+              <span class="tech-tag">Flash 磨损均衡</span>
+              <span class="tech-tag">C++ 上位机</span>
+            </div>
+            <a href="project-freertos.html"
+               class="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-semibold text-sm transition-colors">
+              查看详情
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ───── 项目 2: 仿生蝴蝶 ───── -->
+        <div class="project-card fade-in">
+          <div class="card-accent-bar"></div>
+          <div class="p-6">
+            <div class="w-14 h-14 rounded-lg bg-purple-50 flex items-center justify-center text-2xl mb-4">
+              🦋
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">
+              仿生蝴蝶 — BLE 姿态控制
+            </h3>
+            <p class="text-sm text-slate-500 mb-4 leading-relaxed">
+              基于 STM32 + 蓝牙 BLE + MPU6050 的仿生蝴蝶飞行控制系统，支持手机 APP 遥控与姿态自稳
+            </p>
+            <div class="mb-5">
+              <span class="tech-tag">STM32F103</span>
+              <span class="tech-tag">BLE 蓝牙</span>
+              <span class="tech-tag">MPU6050</span>
+              <span class="tech-tag">PID 控制</span>
+              <span class="tech-tag">PWM</span>
+            </div>
+            <a href="project-butterfly.html"
+               class="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-semibold text-sm transition-colors">
+              查看详情
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ───── 项目 3: 智能桌面小狗 ───── -->
+        <div class="project-card fade-in">
+          <div class="card-accent-bar"></div>
+          <div class="p-6">
+            <div class="w-14 h-14 rounded-lg bg-amber-50 flex items-center justify-center text-2xl mb-4">
+              🐕
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">
+              智能桌面小狗
+            </h3>
+            <p class="text-sm text-slate-500 mb-4 leading-relaxed">
+              基于 STM32F103 的事件驱动状态机，兼容离线语音与蓝牙双通道指令，驱动多路舵机完成动作序列
+            </p>
+            <div class="mb-5">
+              <span class="tech-tag">STM32F103C8T6</span>
+              <span class="tech-tag">状态机</span>
+              <span class="tech-tag">语音识别</span>
+              <span class="tech-tag">蓝牙</span>
+              <span class="tech-tag">舵机控制</span>
+            </div>
+            <a href="project-deskpet.html"
+               class="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-semibold text-sm transition-colors">
+              查看详情
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- ───── 项目 4: 3-PRS 并联雕刻机器人 ───── -->
+        <div class="project-card fade-in">
+          <div class="card-accent-bar"></div>
+          <div class="p-6">
+            <div class="w-14 h-14 rounded-lg bg-red-50 flex items-center justify-center text-2xl mb-4">
+              🤖
+            </div>
+            <h3 class="text-lg font-bold text-slate-800 mb-2">
+              3-PRS 并联雕刻机器人
+            </h3>
+            <p class="text-sm text-slate-500 mb-4 leading-relaxed">
+              采用 3-PRS 三平移并联构型，完成运动学建模与反解，结合 OpenCV 视觉自动生成雕刻路径
+            </p>
+            <div class="mb-5">
+              <span class="tech-tag">STM32</span>
+              <span class="tech-tag">运动学反解</span>
+              <span class="tech-tag">OpenCV</span>
+              <span class="tech-tag">PWM 同步</span>
+              <span class="tech-tag">SolidWorks</span>
+            </div>
+            <a href="project-3prs.html"
+               class="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-semibold text-sm transition-colors">
+              查看详情
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+      </div><!-- /grid -->
+    </div>
+  </section>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="site-footer py-8 px-4 text-center">
+    <p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

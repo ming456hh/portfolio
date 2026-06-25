@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于我 — 嵌入式开发实习生 陈明</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#1a365d',accent:'#2563eb','accent-hover':'#1d4ed8'}}}}</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- 导航栏 -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">&lt;<span class="text-blue-400">Portfolio</span>/&gt;</a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-blue-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-2xl sm:text-3xl font-bold text-white mb-2">关于我</h1>
+      <p class="text-gray-400 text-sm">About Me — 学习经历与求职规划</p>
+      <div class="w-16 h-1 bg-accent mx-auto mt-4 rounded-full"></div>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 space-y-12">
+
+    <!-- 个人简介卡片 -->
+    <section class="fade-in">
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+        <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-blue-100 flex items-center justify-center text-3xl flex-shrink-0">
+          👨‍💻
+        </div>
+        <div class="text-center sm:text-left">
+          <h2 class="text-xl font-bold text-slate-800 mb-1">陈明</h2>
+          <p class="text-accent font-medium text-sm mb-1">嵌入式开发实习生 / 本科在读</p>
+          <p class="text-slate-500 text-xs mb-3">东北林业大学（211）· 机器人工程专业 · 2023.09-2027.06</p>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            211 高校机器人工程专业背景，拥有扎实的嵌入式理论与项目实战功底。精通 STM32 外设开发、FreeRTOS 多任务开发及 C 语言编程，熟练运用 PID 控制、运动学反解、OpenCV 视觉处理等技术。具备完整的项目开发与软硬件联调经验，擅长排查驱动、通信、多任务冲突等问题。学习能力强，做事严谨负责，渴望在嵌入式岗位持续深耕。
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2 justify-center sm:justify-start">
+            <span class="skill-tag text-xs">📧 18244439951@163.com</span>
+            <span class="skill-tag text-xs">📱 18244439951</span>
+            <span class="skill-tag text-xs">📍 四川省宜宾市</span>
+            <span class="skill-tag text-xs">🎓 英语四级 (CET4)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 主修课程 -->
+    <section class="fade-in">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 text-sm">📖</span>
+        主修课程
+      </h2>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-center">
+          <div class="bg-blue-50 rounded-lg p-3"><span class="text-2xl font-bold text-accent">91</span><p class="text-xs text-slate-500 mt-1">机器视觉</p></div>
+          <div class="bg-blue-50 rounded-lg p-3"><span class="text-2xl font-bold text-accent">86</span><p class="text-xs text-slate-500 mt-1">机器人动力学与控制</p></div>
+          <div class="bg-blue-50 rounded-lg p-3"><span class="text-2xl font-bold text-accent">86</span><p class="text-xs text-slate-500 mt-1">智能机器人系统设计</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">微机原理与接口技术</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">嵌入式系统</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">机器人感知技术</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">电路与电子学</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">自动控制原理</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">液压与气压传动</p></div>
+          <div class="bg-slate-50 rounded-lg p-3 flex items-center justify-center"><p class="text-xs text-slate-600">MATLAB 仿真</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 学习路线时间线 -->
+    <section class="fade-in">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 text-sm">📚</span>
+        成长路径
+      </h2>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="timeline-item fade-in">
+          <h3 class="font-bold text-slate-800">大一 · 基础入门</h3>
+          <p class="text-sm text-slate-500 mt-1">2023 — 2024 学年</p>
+          <ul class="mt-2 text-slate-600 text-sm space-y-1 list-disc list-inside">
+            <li>系统学习 C 语言，打下扎实编程基础</li>
+            <li>学习电路与电子学、模拟/数字电路</li>
+            <li>初次接触嵌入式系统概念与微机原理</li>
+          </ul>
+        </div>
+        <div class="timeline-item fade-in">
+          <h3 class="font-bold text-slate-800">大二 · MCU 实战入门</h3>
+          <p class="text-sm text-slate-500 mt-1">2024 — 2025 学年</p>
+          <ul class="mt-2 text-slate-600 text-sm space-y-1 list-disc list-inside">
+            <li>入手 STM32F103C8T6，系统学习 Keil MDK + HAL 库开发</li>
+            <li>掌握 GPIO、USART、I²C、SPI、PWM、ADC 等常用外设</li>
+            <li>完成 <strong>智能桌面小狗</strong>项目：事件驱动状态机 + 语音/蓝牙双通道 + 多路舵机控制</li>
+            <li>加入机器人创新实验室</li>
+          </ul>
+        </div>
+        <div class="timeline-item fade-in">
+          <h3 class="font-bold text-slate-800">大三上学期 · RTOS & 算法进阶</h3>
+          <p class="text-sm text-slate-500 mt-1">2025 年 秋</p>
+          <ul class="mt-2 text-slate-600 text-sm space-y-1 list-disc list-inside">
+            <li>系统学习 FreeRTOS：任务调度、队列、信号量、互斥锁、软件定时器</li>
+            <li>完成 <strong>FreeRTOS 环境监测终端</strong>：双任务 + I²C OLED + 蓝牙透传 + Flash 磨损均衡</li>
+            <li>完成 <strong>3-PRS 并联雕刻机器人</strong>：运动学反解 + OpenCV 视觉路径生成 + 三轴 PWM 同步</li>
+            <li>学习自动控制原理、PID 控制理论</li>
+          </ul>
+        </div>
+        <div class="timeline-item fade-in">
+          <h3 class="font-bold text-slate-800">大三下学期 · 系统整合</h3>
+          <p class="text-sm text-slate-500 mt-1">2026 年 春</p>
+          <ul class="mt-2 text-slate-600 text-sm space-y-1 list-disc list-inside">
+            <li>完成 <strong>仿生蝴蝶</strong>项目：MPU6050 姿态解算 + 互补滤波 + 串级 PID + BLE 无线控制</li>
+            <li>学习 SolidWorks 3D 建模、嘉立创 EDA 电路设计</li>
+            <li>掌握 DC-DC 电源设计、电机驱动电路调试</li>
+            <li>整理项目经验，构建个人作品集网站</li>
+          </ul>
+        </div>
+        <div class="timeline-item fade-in">
+          <h3 class="font-bold text-slate-800">大四 · 实习求职</h3>
+          <p class="text-sm text-slate-500 mt-1">2026 — 2027</p>
+          <ul class="mt-2 text-slate-600 text-sm space-y-1 list-disc list-inside">
+            <li>目标岗位：嵌入式软件开发实习生（MCU 固件 / RTOS / IoT）</li>
+            <li>持续深入 Linux 驱动开发与 ARM 架构</li>
+            <li>期望在实习中积累企业级项目经验与团队协作流程</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 求职规划 -->
+    <section class="fade-in">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 text-sm">🎯</span>
+        求职规划
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 text-center">
+          <div class="text-3xl mb-3">🏢</div>
+          <h3 class="font-bold text-slate-800 mb-2">目标岗位</h3>
+          <p class="text-sm text-slate-600">嵌入式软件开发实习生<br>MCU 固件 / RTOS / IoT<br>机器人控制</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 text-center">
+          <div class="text-3xl mb-3">📈</div>
+          <h3 class="font-bold text-slate-800 mb-2">短期目标</h3>
+          <p class="text-sm text-slate-600">获得实习机会<br>积累企业级项目经验<br>学习团队协作与代码规范</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 shadow-sm border border-slate-200 text-center">
+          <div class="text-3xl mb-3">🚀</div>
+          <h3 class="font-bold text-slate-800 mb-2">长期规划</h3>
+          <p class="text-sm text-slate-600">成长为嵌入式系统工程师<br>深入 Linux BSP & 驱动<br>掌握 AIoT 边缘计算</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 个人特质 -->
+    <section class="fade-in">
+      <h2 class="text-xl sm:text-2xl font-bold text-slate-800 mb-8 flex items-center gap-3">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 text-sm">💡</span>
+        个人特质
+      </h2>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-slate-600 text-sm">
+          <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+            <span class="text-xl mt-0.5">🔍</span>
+            <div>
+              <h4 class="font-semibold text-slate-800">底层好奇心</h4>
+              <p>擅长排查驱动、通信、多任务冲突等问题，习惯翻参考手册和时序图找到根本原因</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+            <span class="text-xl mt-0.5">🛠️</span>
+            <div>
+              <h4 class="font-semibold text-slate-800">软硬件全栈</h4>
+              <p>从 SolidWorks 建模、电路设计到固件开发，每一个项目都做到实物可演示</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+            <span class="text-xl mt-0.5">📝</span>
+            <div>
+              <h4 class="font-semibold text-slate-800">严谨负责</h4>
+              <p>做事严谨，注重代码规范与系统可靠性，每个项目均有完整开发日志</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-3 rounded-lg hover:bg-slate-50 transition-colors">
+            <span class="text-xl mt-0.5">🤝</span>
+            <div>
+              <h4 class="font-semibold text-slate-800">团队协作</h4>
+              <p>在机器人创新实验室与队友合作完成多个项目，具备良好的沟通与协作能力</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer py-8 px-4 text-center">
+    <p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
