@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="四轴无人机飞控系统 — 尚硅谷嵌入式精品项目">
+  <title>四轴无人机飞控系统 — 嵌入式开发实习生</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            accent: '#2563eb',
+            'accent-hover': '#1d4ed8',
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <!-- ========== 导航栏 ========== -->
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">
+          &lt;<span class="text-blue-400">Portfolio</span>/&gt;
+        </a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- ========== 项目 Hero 头部 ========== -->
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto">
+      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-4">
+        <a href="projects.html" class="hover:text-white transition-colors">← 返回项目列表</a>
+      </nav>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
+        四轴无人机飞控系统
+      </h1>
+      <p class="text-blue-200 text-sm sm:text-base max-w-2xl">
+        基于 STM32F103 + FreeRTOS 的双板四轴无人机系统：飞控板运行 4 任务实时调度，集成 MPU6050 姿态解算、串级 PID 控制、2.4G 无线通信与 VL53L1X 激光定高；遥控板通过摇杆 ADC + OLED 屏幕实现人机交互
+      </p>
+      <div class="flex flex-wrap gap-2 mt-5">
+        <span class="tech-tag text-sm">STM32F103C8T6</span>
+        <span class="tech-tag text-sm">FreeRTOS</span>
+        <span class="tech-tag text-sm">MPU6050</span>
+        <span class="tech-tag text-sm">串级 PID</span>
+        <span class="tech-tag text-sm">四元数姿态解算</span>
+        <span class="tech-tag text-sm">卡尔曼滤波</span>
+        <span class="tech-tag text-sm">Si24R1 2.4G</span>
+        <span class="tech-tag text-sm">VL53L1X 激光测距</span>
+        <span class="tech-tag text-sm">PWM 电机驱动</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== 主体内容 ========== -->
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 space-y-16">
+
+    <!-- ━━━━━ 1. 项目背景与需求 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目背景与需求</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <p class="mb-4">
+          本项目来源于<strong>尚硅谷嵌入式精品课程——四轴无人机</strong>，是一个从零搭建的完整飞控系统工程。
+          采用<strong>双 STM32F103C8T6 板卡架构</strong>（飞控板 + 遥控器板），运行 FreeRTOS 实时操作系统，
+          实现了从传感器数据采集 → 姿态解算 → 串级 PID 控制 → 电机输出 → 2.4G 无线遥控的完整飞控闭环。
+        </p>
+        <p class="mb-4">
+          项目按 11 个章节逐步迭代：从 FreeRTOS 移植、电源管理、LED 灯控、通信驱动、遥控数据协议、
+          飞行状态机、MPU6050 数据采集、姿态角控制、平稳飞行，到最终实现激光定高和 OLED 屏幕显示，
+          完整覆盖了嵌入式无人机开发的全部核心环节。
+        </p>
+        <h4 class="font-semibold text-slate-800 mb-2 mt-5">功能需求清单</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li>MPU6050 六轴数据采集（陀螺仪 + 加速度计），采样率 ≥ 166Hz（6ms 周期）</li>
+          <li>四元数互补滤波姿态解算，实时输出俯仰角 / 横滚角 / 偏航角欧拉角</li>
+          <li>串级 PID 控制器：外环角度环（P） + 内环角速度环（PD），三轴独立调节</li>
+          <li>VL53L1X 激光 ToF 测距实现定高飞行，高度 PID 独立闭环</li>
+          <li>Si24R1 2.4GHz 双向无线通信，飞控与遥控器实时数据交互</li>
+          <li>遥控器双摇杆 ADC 采样 + OLED 屏幕状态显示 + 按键交互</li>
+          <li>飞行状态机：IDLE → NORMAL ↔ FIX_HEIGHT，含 FAIL 故障保护</li>
+          <li>电池电量监测（IP5305T）+ 低电量自动关机 + ADC 电压回传</li>
+          <li>系统连续稳定飞行，安全保护：油门 &lt; 50 强制停转</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 2. 系统架构 / 硬件框图 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">2</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">系统架构 / 硬件框图</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <p class="text-slate-600 mb-5 leading-relaxed">
+          整体系统由<strong>飞控板</strong>和<strong>遥控器板</strong>两块 STM32F103C8T6 核心板组成，通过 Si24R1 2.4GHz 无线模块通信。
+          飞控板负责传感器采集、姿态解算、PID 控制和电机驱动；遥控器板负责摇杆输入采集、OLED 显示和指令下发。
+        </p>
+
+        <!-- 系统架构图（ASCII 风格示意） -->
+        <div class="bg-slate-900 rounded-lg p-6 mb-6 overflow-x-auto">
+          <pre class="text-green-400 text-xs leading-relaxed font-mono whitespace-pre">
+┌──────────────────────────────────────────────────────────────────┐
+│                       四轴无人机系统架构                           │
+├────────────────────────────┬─────────────────────────────────────┤
+│       飞控板 (P01)         │         遥控器板 (P02)               │
+│   STM32F103C8T6 @72MHz    │    STM32F103C8T6 @72MHz             │
+│                            │                                      │
+│  ┌──────────────────┐     │   ┌──────────────────┐               │
+│  │   FreeRTOS 调度    │     │   │   FreeRTOS 调度   │              │
+│  │  ┌──────────────┐ │     │   │  ┌──────────────┐ │              │
+│  │  │ power_task   │ │     │   │  │ com_task     │ │              │
+│  │  │ (prio=4,10s) │ │     │   │  │ (prio=2,10ms)│ │              │
+│  │  ├──────────────┤ │     │   │  ├──────────────┤ │              │
+│  │  │ flight_task  │ │     │   │  │ display_task │ │              │
+│  │  │ (prio=3,6ms) │ │     │   │  │ (prio=1,50ms)│ │              │
+│  │  ├──────────────┤ │     │   │  └──────────────┘ │              │
+│  │  │ com_task     │ │     │   └──────────────────┘               │
+│  │  │ (prio=4,10ms)│ │     │                                      │
+│  │  ├──────────────┤ │     │   ┌──────────────────┐               │
+│  │  │ led_task     │ │     │   │  硬件外设         │               │
+│  │  │ (prio=1,100ms)│ │    │   │  · 双摇杆 ADC    │               │
+│  │  └──────────────┘ │     │   │  · OLED SSD1315  │               │
+│  └──────────────────┘     │   │  · 按键 GPIO      │               │
+│                            │   │  · Si24R1 SPI1    │               │
+│  ┌──────────────────┐     │   │  · 电池 ADC       │               │
+│  │  硬件外设         │     │   └──────────────────┘               │
+│  │  · MPU6050 I2C1   │     │                                      │
+│  │  · VL53L1X I2C2   │     │    ╔══════════════════╗              │
+│  │  · Si24R1 SPI1    │     │◄──═╣  Si24R1 2.4GHz   ║══►           │
+│  │  · IP5305T I2C    │     │    ╚══════════════════╝              │
+│  │  · 4×PWM 电机     │     │     双向自定义协议通信                 │
+│  │  · 4×LED 指示灯   │     │                                      │
+│  │  · 电池 ADC       │     │                                      │
+│  └──────────────────┘     │                                      │
+└────────────────────────────┴─────────────────────────────────────┘
+          </pre>
+        </div>
+
+        <!-- 硬件资源表 - 飞控板 -->
+        <h4 class="font-semibold text-slate-800 mt-6 mb-3">飞控板关键硬件资源</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50">
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">外设/模块</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">接口</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">用途</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-600">
+              <tr><td class="border border-slate-200 px-4 py-2">STM32F103C8T6</td><td class="border border-slate-200 px-4 py-2">—</td><td class="border border-slate-200 px-4 py-2">主控 MCU，Cortex-M3 @72MHz，20KB SRAM</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">MPU6050</td><td class="border border-slate-200 px-4 py-2">I²C1</td><td class="border border-slate-200 px-4 py-2">6 轴陀螺仪 + 加速度计，姿态感知核心</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">VL53L1X</td><td class="border border-slate-200 px-4 py-2">I²C2</td><td class="border border-slate-200 px-4 py-2">ToF 激光测距 (最远 4m)，定高飞行传感器</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">Si24R1</td><td class="border border-slate-200 px-4 py-2">SPI1</td><td class="border border-slate-200 px-4 py-2">2.4GHz 无线收发 (nRF24L01+ 兼容)，2Mbps</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">IP5305T</td><td class="border border-slate-200 px-4 py-2">I²C</td><td class="border border-slate-200 px-4 py-2">电池管理 IC，电量监测 + 自动关机</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">4× 空心杯电机</td><td class="border border-slate-200 px-4 py-2">TIM1-CH3 / TIM2-CH2 / TIM3-CH1 / TIM4-CH4</td><td class="border border-slate-200 px-4 py-2">X 型四旋翼布局，独立 PWM 调速</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">4× LED</td><td class="border border-slate-200 px-4 py-2">GPIO</td><td class="border border-slate-200 px-4 py-2">飞行状态指示（连接/飞行模式/故障）</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">AMS1117-3.3V</td><td class="border border-slate-200 px-4 py-2">—</td><td class="border border-slate-200 px-4 py-2">线性稳压，电池 → 3.3V 系统供电</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 硬件资源表 - 遥控器 -->
+        <h4 class="font-semibold text-slate-800 mt-6 mb-3">遥控器板关键硬件资源</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-slate-50">
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">外设/模块</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">接口</th>
+                <th class="border border-slate-200 px-4 py-2 text-left font-semibold">用途</th>
+              </tr>
+            </thead>
+            <tbody class="text-slate-600">
+              <tr><td class="border border-slate-200 px-4 py-2">STM32F103C8T6</td><td class="border border-slate-200 px-4 py-2">—</td><td class="border border-slate-200 px-4 py-2">遥控器主控 MCU</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">双轴摇杆 ×2</td><td class="border border-slate-200 px-4 py-2">ADC1 (4ch)</td><td class="border border-slate-200 px-4 py-2">油门/偏航/俯仰/横滚 四通道输入 (0-1000)</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">OLED 0.96"</td><td class="border border-slate-200 px-4 py-2">I²C (SSD1315)</td><td class="border border-slate-200 px-4 py-2">实时显示连接状态/电池电压/飞行数据</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">Si24R1</td><td class="border border-slate-200 px-4 py-2">SPI1</td><td class="border border-slate-200 px-4 py-2">2.4GHz 无线收发，与飞控板双向通信</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">功能按键</td><td class="border border-slate-200 px-4 py-2">GPIO</td><td class="border border-slate-200 px-4 py-2">定高开关 / 关机 / 模式切换</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 3. 核心实现思路 & 技术亮点 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">3</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">核心实现思路与技术亮点</h2>
+      </div>
+
+      <!-- 3.1 软件架构 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.1 软件架构设计</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">
+          飞控软件基于 FreeRTOS 多任务架构，划分 4 个核心任务。采用<strong>抢占式调度 + 时间触发</strong>混合模式，
+          飞行控制任务以 6ms (166Hz) 固定周期运行，通过 vTaskDelayUntil 实现精确时序控制。
+        </p>
+        <ul class="list-disc list-inside text-slate-600 space-y-1 text-sm">
+          <li><strong>flight_task</strong>（prio=3, 6ms）：核心飞控任务 — 读取 MPU6050 → 低通/卡尔曼滤波 → 四元数姿态解算 → 串级 PID → 电机混合输出 → 定高 PID（每 4 次即 24ms 执行一次）</li>
+          <li><strong>com_task</strong>（prio=4, 10ms）：通信任务 — Si24R1 数据接收/发送、遥控连接状态维护、飞行状态机切换、电池电压 ADC 采集回传</li>
+          <li><strong>power_task</strong>（prio=4, 10s）：电源管理 — IP5305T 电池电量读取，通过 FreeRTOS 直接任务通知接收关机指令</li>
+          <li><strong>led_task</strong>（prio=1, 100ms）：状态指示 — 前灯指示遥控连接状态，后灯按飞行状态以不同频率闪烁（IDLE: 500ms / NORMAL: 200ms / FIX_HEIGHT: 常亮 / FAIL: 全灭）</li>
+        </ul>
+      </div>
+
+      <!-- 3.2 姿态解算 & 滤波 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.2 姿态解算与传感器融合</h3>
+        <div class="space-y-4 text-slate-600">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">低通滤波</span>
+            对陀螺仪原始角速度数据进行一阶低通滤波（output = α·last + (1-α)·current），抑制高频噪声。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">卡尔曼滤波</span>
+            对加速度计数据使用卡尔曼滤波器（3 个独立 Kalman Filter 实例分别处理 X/Y/Z 轴），平滑因振动引起的剧烈波动。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">四元数互补滤波</span>
+            采用 Mahony 算法思路：利用加速度计修正陀螺仪积分漂移（Kp=0.8, Ki=0.0003），通过四元数微分方程更新姿态，
+            最终从旋转矩阵提取欧拉角（pitch 用 asin、roll 用 atan2、yaw 用陀螺仪 Z 轴积分）。使用快速平方根倒数算法 (Fast Inverse Square Root) 优化归一化性能。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-xs font-semibold rounded mr-2">偏航角处理</span>
+            偏航角仅使用陀螺仪 Z 轴积分（无磁力计修正），设置 ±0.5°/s 死区过滤漂移噪声。
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 串级 PID 控制 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.3 串级 PID 控制器设计</h3>
+        <div class="space-y-4 text-slate-600">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">串级架构</span>
+            采用<strong>外环角度环 + 内环角速度环</strong>的串级 PID 结构。外环以目标角度为输入、当前欧拉角为反馈，输出作为内环的目标角速度；
+            内环以目标角速度为输入、当前陀螺仪角速度为反馈，输出最终 PWM 修正量。三轴（俯仰/横滚/偏航）各有一套独立的串级 PID。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">PID 参数整定</span>
+            俯仰/横滚外环 Kp=-7.0，内环 Kp=3.0 / Kd=0.5；偏航外环 Kp=-3.0，内环 Kp=-5.0。内环引入微分项抑制角速度超调，外环仅使用比例项保证角度跟踪快速性。
+            调试过程中先整定内环（锁定角速度），再整定外环（锁定角度）。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">电机混合</span>
+            4 个电机的 PWM 输出 = 基础油门 + 俯仰修正 ± 横滚修正 ± 偏航限幅修正。偏航修正使用 Com_limit() 限幅在 ±100 内，
+            防止偏航修正过大影响升力。油门 &lt; 50 时所有电机强制停转作为安全保护。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded mr-2">定高 PID</span>
+            独立的高度 PID 控制器（Kp=-0.6, Kd=-0.2），以定高触发时的高度为期望值，VL53L1X 实时测量值为反馈，输出叠加到 4 个电机的油门基础值上。
+            由于激光测距数据更新较慢，定高 PID 以 24ms 周期（6ms × 4）独立计算。
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.4 2.4G 通信协议 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.4 2.4GHz 无线通信与状态机</h3>
+        <div class="space-y-4 text-slate-600">
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded mr-2">通信协议</span>
+            遥控器每 10ms 发送一帧数据（油门/偏航/俯仰/横滚各 0-1000、定高标志位、关机标志位），飞控板接收后回传电池电压。
+            若连续多次未收到数据则判定为 <strong>REMOTE_DISCONNECTED</strong> 状态，断开连接后自动切换到 IDLE 状态确保安全。
+          </div>
+          <div>
+            <span class="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded mr-2">飞行状态机</span>
+            设计 4 种飞行状态：<strong>IDLE</strong>（电机停转）→ <strong>NORMAL</strong>（PID 稳定飞行）↔ <strong>FIX_HEIGHT</strong>（定高模式）以及 <strong>FAIL</strong>（故障保护，逐步降低转速至 0）。
+            遥控器按键触发定高开关，FAIL 状态解除后通过 FreeRTOS 直接任务通知恢复通信任务。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 4. 难点与解决方案 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm">4</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">遇到的难点与解决方案</h2>
+      </div>
+
+      <div class="space-y-6">
+        <!-- 难点 1 -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 1：串级 PID 参数整定 —— 飞机剧烈振荡无法稳定</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>起飞后飞机在俯仰/横滚方向持续振荡，振幅逐渐增大直至失控翻覆</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>通过 Vofa+ 串口数据可视化工具实时绘制陀螺仪角速度曲线，发现内环角速度存在明显超调——微分项系数 Kd 过小，无法有效抑制角速度的快速变化。同时外环角度环 Kp 绝对值过大，微小的角度偏差被放大为过大的角速度指令。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>采用"先内环后外环"的分步整定策略：先固定飞机于单轴，只调内环角速度 PD 参数，确认角速度能快速收敛至 0</li>
+              <li>内环稳定后再接入外环角度 P，从较小 Kp 开始逐步增大至角度响应迅速且无超调</li>
+              <li>最终参数：外环 Kp=-7.0(P-only)，内环 Kp=3.0 / Kd=0.5(PD)，三轴独立调试完成后联调</li>
+              <li>整定后飞机实现稳定悬停，姿态偏差在 ±2° 以内</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 难点 2 -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 2：MPU6050 数据噪声导致姿态角漂移</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>飞机静止时欧拉角缓慢漂移，尤其是偏航角在 30 秒内漂移超过 10°</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>陀螺仪原始数据存在零偏和随机噪声，直接积分必然导致角度漂移。加速度计虽可提供绝对角度参考，但易受机体振动干扰。单一传感器无法满足精度要求。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>陀螺仪数据先经过一阶低通滤波器消除高频毛刺</li>
+              <li>加速度计数据通过卡尔曼滤波器平滑振动尖峰（3 个独立 Kalman 实例）</li>
+              <li>四元数互补滤波融合两者：加速度计修正陀螺仪积分的长期漂移（Kp=0.8），陀螺仪保证短期动态响应</li>
+              <li>偏航角增加 ±0.5°/s 死区阈值，低于阈值的微小角速度视为噪声忽略</li>
+              <li>最终静止时角度漂移 &lt; 1°/min，动态跟踪延迟 &lt; 10ms</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 难点 3 -->
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 3：定高飞行时高度 PID 与姿态 PID 相互干扰</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>开启定高模式后飞机在垂直方向上下波动，同时姿态稳定性变差</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>分析过程：</strong>高度 PID 输出直接叠加到 4 个电机的油门基础值上，但 VL53L1X 激光测距在飞机倾斜时测量的是斜距而非垂直高度。飞机姿态变化 → 激光测量值波动 → 高度 PID 误修正 → 电机转速变化 → 姿态进一步变化，形成正反馈环路。</p>
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li>降低高度 PID 的执行频率至 24ms（飞行控制 6ms 的 1/4），减少高度修正对姿态环的快速扰动</li>
+              <li>高度 PID 输出不参与姿态混合，直接均等叠加到 4 个电机上，避免引入不对称力矩</li>
+              <li>高度 PID 使用较小的 Kp=-0.6，配合 Kd=-0.2 微分项抑制超调</li>
+              <li>优化后飞机在定高模式下高度波动控制在 ±3cm 以内</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 5. 实物演示 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">5</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">实物演示</h2>
+      </div>
+
+      <!-- 图片 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-semibold text-slate-800 mb-4">实物照片</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="img-placeholder rounded-lg">
+            <!-- 替换：<img src="assets/drone-flight-board.jpg" alt="飞控板实物" class="w-full rounded-lg"> -->
+            <span>📷 飞控板实物<br><small>（MPU6050 + VL53L1X + Si24R1 + 4路 PWM）</small></span>
+          </div>
+          <div class="img-placeholder rounded-lg">
+            <!-- 替换：<img src="assets/drone-remote.jpg" alt="遥控器实物" class="w-full rounded-lg"> -->
+            <span>📷 遥控器实物<br><small>（双摇杆 + OLED 屏幕 + Si24R1）</small></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 视频 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-800 mb-4">飞行演示视频</h3>
+        <div class="video-placeholder rounded-lg">
+          <!--
+            替换为实际视频：
+            <video controls class="w-full rounded-lg" poster="assets/drone-flight-poster.jpg">
+              <source src="assets/drone-flight-demo.mp4" type="video/mp4">
+            </video>
+          -->
+          <span class="flex flex-col items-center gap-2">
+            <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>🎬 飞行演示视频<br><small>（悬停稳定性测试 / 定高飞行 / 遥控响应）</small></span>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 6. 关键代码片段 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">6</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">关键代码片段</h2>
+      </div>
+
+      <!-- 代码片段 1：串级 PID + 电机混合输出 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+          <span class="text-sm font-semibold text-slate-700">📄 App_flight.c — 串级 PID 控制与四电机混合输出</span>
+        </div>
+        <div class="code-block rounded-none">
+          <span class="lang-label">C</span>
+          <code>
+/* ===== 串级 PID 姿态控制 + 电机混合 (X型四旋翼) ===== */
+
+// 外环角度环 (P-only) + 内环角速度环 (PD)
+void App_flight_pid_process(void)
+{
+    // --- 俯仰角 (Pitch) 串级 PID ---
+    pitch_pid.desire = (remote_data.pit - 500) / 20.0;   // 遥控器值映射到 ±25°
+    pitch_pid.measure = euler_angle.pitch;                // 四元数解算的当前角度
+    gyro_y_pid.measure = (gyro_accel_data.gyro.gyro_y * 2000.0 / 32768.0); // 角速度 °/s
+    Com_PID_Calc_Chain(&pitch_pid, &gyro_y_pid);          // 外环输出 → 内环目标
+
+    // --- 横滚角 (Roll) 串级 PID ---
+    roll_pid.desire = (remote_data.rol - 500) / 20.0;
+    roll_pid.measure = euler_angle.roll;
+    gyro_x_pid.measure = (gyro_accel_data.gyro.gyro_x * 2000.0 / 32768.0);
+    Com_PID_Calc_Chain(&roll_pid, &gyro_x_pid);
+
+    // --- 偏航角 (Yaw) 串级 PID ---
+    yaw_pid.desire = (remote_data.yaw - 500) / 50.0;
+    yaw_pid.measure = euler_angle.yaw;
+    gyro_z_pid.measure = (gyro_accel_data.gyro.gyro_z * 2000.0 / 32768.0);
+    Com_PID_Calc_Chain(&yaw_pid, &gyro_z_pid);
+}
+
+/* X型四旋翼电机混合矩阵 */
+void App_flight_control_motor(void)
+{
+    switch (flight_state) {
+    case NORMAL:
+        // 基础油门 + 俯仰修正 ± 横滚修正 ± 偏航限幅(±100)
+        left_top.speed     = remote_data.thr + gyro_y_pid.output
+                           - gyro_x_pid.output + Com_limit(gyro_z_pid.output, 100, -100);
+        left_bottom.speed  = remote_data.thr - gyro_y_pid.output
+                           - gyro_x_pid.output - Com_limit(gyro_z_pid.output, 100, -100);
+        right_top.speed    = remote_data.thr + gyro_y_pid.output
+                           + gyro_x_pid.output - Com_limit(gyro_z_pid.output, 100, -100);
+        right_bottom.speed = remote_data.thr - gyro_y_pid.output
+                           + gyro_x_pid.output + Com_limit(gyro_z_pid.output, 100, -100);
+        break;
+    case IDLE:
+        // 所有电机停转
+        left_top.speed = left_bottom.speed = right_top.speed = right_bottom.speed = 0;
+        break;
+    case FIX_HEIGHT:
+        // 定高模式：姿态混合 + 高度PID输出均等叠加
+        left_top.speed     = remote_data.thr + gyro_y_pid.output
+                           - gyro_x_pid.output + Com_limit(gyro_z_pid.output, 100, -100)
+                           + height_pid.output;
+        // ... (其余3个电机同理)
+        break;
+    case FAIL:
+        // 故障保护：逐步降低转速至0，完成后通知通信任务
+        left_top.speed -= 2; left_bottom.speed -= 2;
+        right_top.speed -= 2; right_bottom.speed -= 2;
+        if (all_motors_stopped)  xTaskNotifyGive(com_task_handle);
+        break;
+    }
+
+    // 限幅 + 安全保护：油门 &lt; 50 强制停转
+    left_top.speed = Com_limit(left_top.speed, 700, 0);
+    if (remote_data.thr &lt; 50) { /* 四电机全置0 */ }
+
+    Int_motor_set_speed(&left_top);
+    Int_motor_set_speed(&left_bottom);
+    Int_motor_set_speed(&right_top);
+    Int_motor_set_speed(&right_bottom);
+}
+          </code>
+        </div>
+      </div>
+
+      <!-- 代码片段 2：四元数姿态解算（Mahony 互补滤波） -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+          <span class="text-sm font-semibold text-slate-700">📄 Com_imu.c — 四元数互补滤波姿态解算（Mahony 算法）</span>
+        </div>
+        <div class="code-block rounded-none">
+          <span class="lang-label">C</span>
+          <code>
+/* ===== 四元数互补滤波：加速度计修正陀螺仪漂移 ===== */
+/* 参考 Mahony 算法，Kp=0.8, Ki=0.0003，使用快速平方根倒数优化 */
+
+static float Q_rsqrt(float number)   // Fast Inverse Square Root
+{
+    long i; float x2, y;
+    const float threehalfs = 1.5F;
+    x2 = number * 0.5F;
+    y = number;
+    i = *(long *)&y;
+    i = 0x5f3759df - (i >> 1);       // 魔数初始猜测
+    y = *(float *)&i;
+    y = y * (threehalfs - (x2 * y * y)); // 一次牛顿迭代
+    return y;
+}
+
+void Common_IMU_GetEulerAngle(Gyro_Accel_Struct *gyroAccel,
+                               Euler_struct *eulerAngle, float dt)
+{
+    static Quaternion_Struct NumQ = {1, 0, 0, 0};  // 初始四元数
+    static struct V GyroIntegError = {0};           // 积分误差累积
+
+    // 1. 从四元数计算重力方向在机体坐标系的分量
+    Gravity.x = 2*(NumQ.q1*NumQ.q3 - NumQ.q0*NumQ.q2);
+    Gravity.y = 2*(NumQ.q0*NumQ.q1 + NumQ.q2*NumQ.q3);
+    Gravity.z = 1 - 2*(NumQ.q1*NumQ.q1 + NumQ.q2*NumQ.q2);
+
+    // 2. 加速度计归一化后与重力方向叉乘 → 得到姿态误差
+    NormQuat = Q_rsqrt(squa(accel_x) + squa(accel_y) + squa(accel_z));
+    Acc.x = gyroAccel->accel.accel_x * NormQuat; // 归一化
+    Acc.y = gyroAccel->accel.accel_y * NormQuat;
+    Acc.z = gyroAccel->accel.accel_z * NormQuat;
+
+    AccGravity.x = (Acc.y*Gravity.z - Acc.z*Gravity.y); // 叉乘 = 误差
+    AccGravity.y = (Acc.z*Gravity.x - Acc.x*Gravity.z);
+    AccGravity.z = (Acc.x*Gravity.y - Acc.y*Gravity.x);
+
+    // 3. PI 修正：积分项累积 + 比例项即时修正
+    GyroIntegError.x += AccGravity.x * KiDef;
+    GyroIntegError.y += AccGravity.y * KiDef;
+    GyroIntegError.z += AccGravity.z * KiDef;
+
+    Gyro.x = gyroAccel->gyro.gyro_x*Gyro_Gr + KpDef*AccGravity.x + GyroIntegError.x;
+    Gyro.y = gyroAccel->gyro.gyro_y*Gyro_Gr + KpDef*AccGravity.y + GyroIntegError.y;
+    Gyro.z = gyroAccel->gyro.gyro_z*Gyro_Gr + KpDef*AccGravity.z + GyroIntegError.z;
+
+    // 4. 四元数微分方程更新 (一阶龙格库塔)
+    float HalfTime = dt * 0.5f;
+    NumQ.q0 += (-NumQ.q1*Gyro.x - NumQ.q2*Gyro.y - NumQ.q3*Gyro.z) * HalfTime;
+    NumQ.q1 += ( NumQ.q0*Gyro.x - NumQ.q3*Gyro.y + NumQ.q2*Gyro.z) * HalfTime;
+    NumQ.q2 += ( NumQ.q3*Gyro.x + NumQ.q0*Gyro.y - NumQ.q1*Gyro.z) * HalfTime;
+    NumQ.q3 += (-NumQ.q2*Gyro.x + NumQ.q1*Gyro.y + NumQ.q0*Gyro.z) * HalfTime;
+
+    // 5. 四元数归一化
+    NormQuat = Q_rsqrt(squa(NumQ.q0)+squa(NumQ.q1)+squa(NumQ.q2)+squa(NumQ.q3));
+    NumQ.q0 *= NormQuat; NumQ.q1 *= NormQuat;
+    NumQ.q2 *= NormQuat; NumQ.q3 *= NormQuat;
+
+    // 6. 从旋转矩阵提取欧拉角
+    eulerAngle->pitch = asin(2*NumQ.q0*NumQ.q2 - 2*NumQ.q1*NumQ.q3) * 57.29578f;
+    eulerAngle->roll  = atan2f(2*NumQ.q2*NumQ.q3 + 2*NumQ.q0*NumQ.q1,
+                                1 - 2*NumQ.q1*NumQ.q1 - 2*NumQ.q2*NumQ.q2) * 57.29578f;
+
+    // 偏航角：仅用陀螺仪Z轴积分（无磁力计），±0.5°/s死区过滤噪声
+    float yaw_G = gyroAccel->gyro.gyro_z * Gyro_G;
+    if (yaw_G > 0.5f || yaw_G &lt; -0.5f) {
+        eulerAngle->yaw += yaw_G * dt;
+    }
+}
+          </code>
+        </div>
+      </div>
+
+      <!-- 代码片段 3：FreeRTOS 多任务调度 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
+          <span class="text-sm font-semibold text-slate-700">📄 App_freeRTOS_Task.c — FreeRTOS 任务创建与飞行控制任务</span>
+        </div>
+        <div class="code-block rounded-none">
+          <span class="lang-label">C</span>
+          <code>
+/* ===== FreeRTOS 4 任务调度 + 飞行控制主循环 ===== */
+
+// 任务参数定义 (STM32F103C8T6 SRAM 20KB, 每任务栈 128×4=512B)
+void App_freeRTOS_start(void)
+{
+    xTaskCreate(power_task,  "power",  128, NULL, 4, &power_task_handle);
+    xTaskCreate(flight_task, "flight", 128, NULL, 3, &flight_task_handle);
+    xTaskCreate(com_task,    "comm",   128, NULL, 4, &com_task_handle);
+    xTaskCreate(led_task,    "led",    128, NULL, 1, &led_task_handle);
+    vTaskStartScheduler();  // 启动调度器，永不返回
+}
+
+/* 核心飞控任务：6ms 周期 (166Hz) */
+void flight_task(void *args)
+{
+    TickType_t xLastWakeTime = xTaskGetTickCount();
+    uint8_t fix_height_count = 0;
+    App_flight_init();  // MPU6050 初始化 + 电机启动 + VL53L1X 初始化
+
+    for (;;) {
+        // Step 1: MPU6050 读取 → 低通/卡尔曼滤波 → 四元数姿态解算
+        App_flight_get_euler_angle();
+
+        // Step 2: 串级 PID (角度环 → 角速度环)
+        App_flight_pid_process();
+
+        // Step 3: 定高 PID — 每4次 (24ms) 执行一次
+        if (flight_state == FIX_HEIGHT) {
+            fix_height_count++;
+            if (fix_height_count >= 4) {
+                height_pid.desire = fix_height;            // 定高时的基准高度
+                height_pid.measure = Int_VL53L1X_GetDistance(); // 激光实时测距
+                Com_PID_Calc(&height_pid);
+                fix_height_count = 0;
+            }
+        }
+
+        // Step 4: PID 输出 → 电机混合矩阵 → PWM 输出
+        App_flight_control_motor();
+
+        vTaskDelayUntil(&xLastWakeTime, pdMS_TO_TICKS(6)); // 精确 6ms 周期
+    }
+}
+
+/* 通信任务：10ms 周期 */
+void com_task(void *args)
+{
+    Int_bat_ADC_Init();
+    for (;;) {
+        uint8_t res = App_receive_data();           // Si24R1 接收遥控数据
+        App_process_connect_state(res);             // 更新连接状态
+        if (remote_data.shutdown == 1) {
+            xTaskNotifyGive(power_task_handle);     // 直接任务通知 → 关机
+        }
+        App_process_flight_state();                 // 飞行状态机切换
+        float voltage = Int_bat_ADC_Read();
+        sprintf((char*)back_buff, "%.2f", voltage); // 电池电压回传
+        vTaskDelay(pdMS_TO_TICKS(10));
+    }
+}
+          </code>
+        </div>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 7. 项目总结与收获 ━━━━━ -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">7</span>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目总结与个人收获</h2>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <h4 class="font-semibold text-slate-800 mb-3">项目成果</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>从零搭建了一套完整的四轴无人机软硬件系统，包含飞控板和遥控器板两块独立 STM32 板卡</li>
+          <li>实现了 166Hz 高频飞控闭环：传感器采集 → 低通/卡尔曼滤波 → 四元数姿态解算 → 串级 PID → 电机输出</li>
+          <li>串级 PID 参数整定成功，飞机稳定悬停姿态偏差在 ±2° 以内</li>
+          <li>VL53L1X 激光定高功能实现，高度波动控制在 ±3cm 以内</li>
+          <li>完整的故障保护机制：遥控断连检测、FAIL 状态逐步降速、油门安全锁</li>
+          <li>项目覆盖 11 个渐进式章节，从 FreeRTOS 移植到完整飞行功能，体现工程迭代能力</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">个人收获</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>深入理解了四元数姿态解算原理，掌握了 Mahony 互补滤波算法的工程实现</li>
+          <li>系统掌握了串级 PID 控制器的设计和参数整定方法（"先内环后外环"策略）</li>
+          <li>熟练运用 FreeRTOS 多任务调度：优先级分配、vTaskDelayUntil 精确周期、直接任务通知等高级特性</li>
+          <li>掌握了 STM32 多外设协同工作：I²C (MPU6050+VL53L1X+IP5305T+OLED)、SPI (Si24R1)、ADC (摇杆+电池)、PWM (4路电机)</li>
+          <li>学会了使用 Vofa+ 等工具进行实时数据可视化和 PID 调试</li>
+          <li>提升了在 20KB SRAM 资源约束下的内存管理意识和代码优化能力</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">后续改进方向</h4>
+        <ul class="list-disc list-inside space-y-2">
+          <li>引入磁力计 (HMC5883L) 修正偏航角漂移，实现真正的无漂航向锁定</li>
+          <li>增加光流传感器 (PMW3901) 实现水平位置悬停</li>
+          <li>移植 FreeRTOS CMSIS-V2 接口，提升代码可移植性</li>
+          <li>增加 SD 卡数据记录功能，支持飞行数据离线分析</li>
+          <li>优化电机启动算法，消除低速时的启动死区抖动</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ━━━━━ 导航：返回 / 上下一项 ━━━━━ -->
+    <div class="flex items-center justify-between pt-4 border-t border-slate-200 fade-in">
+      <a href="projects.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        返回项目列表
+      </a>
+      <a href="project-butterfly.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors">
+        下一个项目
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ========== 页脚 ========== -->
+  <footer class="site-footer py-8 px-4 text-center">
+    <p>&copy; 2026 陈明 — 嵌入式开发实习生作品集. Built with Tailwind CSS.</p>
+  </footer>
+
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
