@@ -68,7 +68,16 @@
       <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">2</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">系统架构 / 硬件框图</h2></div>
       <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
         <p class="text-slate-600 mb-5 leading-relaxed">系统分为三大子系统：SolidWorks 机械结构设计 → OpenCV 视觉路径规划 → STM32 运动控制执行。MATLAB 用于运动学模型的仿真验证：</p>
-        <div class="img-placeholder"><span>📷 系统架构图 / SolidWorks 3D 模型 / 运动学简图<br><small>（请替换为实际图片）</small></span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
+          <div class="rounded-lg overflow-hidden border border-slate-200">
+            <img src="assets/3prs-3d-model.png" alt="SolidWorks 3D模型" class="w-full h-56 object-cover">
+            <p class="text-center text-sm text-slate-500 py-2">SolidWorks 3D 模型</p>
+          </div>
+          <div class="rounded-lg overflow-hidden border border-slate-200">
+            <img src="assets/3prs-kinematics.png" alt="运动学反解仿真" class="w-full h-56 object-cover">
+            <p class="text-center text-sm text-slate-500 py-2">MATLAB 运动学反解仿真</p>
+          </div>
+        </div>
         <h4 class="font-semibold text-slate-800 mt-6 mb-3">关键硬件资源</h4>
         <div class="overflow-x-auto">
           <table class="w-full text-sm border-collapse">
@@ -146,12 +155,11 @@
       <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">5</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">实物演示</h2></div>
       <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
         <h3 class="font-semibold text-slate-800 mb-4">实物照片</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 gap-4">
           <div class="rounded-lg overflow-hidden border border-slate-200">
-            <img src="assets/3prs.jpg" alt="3-PRS并联雕刻机器人实物" class="w-full h-48 object-cover">
+            <img src="assets/3prs.jpg" alt="3-PRS并联雕刻机器人实物" class="w-full h-64 object-cover">
             <p class="text-center text-sm text-slate-500 py-2">3-PRS 并联雕刻机器人实物</p>
           </div>
-          <div class="img-placeholder rounded-lg"><span>📷 雕刻作品样例<br><small>（请替换 src）</small></span></div>
         </div>
       </div>
       <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
