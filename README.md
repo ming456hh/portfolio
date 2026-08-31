@@ -15,7 +15,6 @@ portfolio/
 ├── project-template.html       # 项目详情模板 — 复制此文件新建项目
 ├── project-freertos.html       # FreeRTOS 智能窗户温控系统 详情
 ├── project-butterfly.html      # 仿生蝴蝶 BLE 姿态控制 详情
-├── project-deskpet.html        # 智能桌面小狗 详情
 ├── project-3prs.html           # 3-PRS 并联雕刻机器人 详情
 ├── css/
 │   └── style.css               # 公共自定义样式（Tailwind 补充）
@@ -265,6 +264,5 @@ GitHub Pages 会在 1-2 分钟内自动重新部署。如果使用网页上传�
 | 联系方式 | `contact.html` | 邮箱/手机/GitHub/微信 + 联系建议 |
 | FreeRTOS 温控 | `project-freertos.html` | DHT22 + OLED + 蓝牙 + Flash + IWDG 全链路 |
 | 仿生蝴蝶 | `project-butterfly.html` | MPU6050 + 互补滤波 + 串级 PID + BLE |
-| 桌面小狗 | `project-deskpet.html` | 状态机 + 语音/蓝牙双通道 + 舵机控制 |
 | 3-PRS 机器人 | `project-3prs.html` | 运动学反解 + OpenCV + 三轴同步插补 |
 | 模板 | `project-template.html` | 复制此文件新增项目 |
