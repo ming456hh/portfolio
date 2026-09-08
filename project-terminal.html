@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>STM32 桌面终端 — 陈明 嵌入式开发</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#1a365d',accent:'#2563eb','accent-hover':'#1d4ed8'}}}}</script>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+  <nav class="navbar fixed top-0 left-0 right-0 z-50 shadow-lg">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <a href="index.html" class="text-white font-bold text-lg tracking-wide">&lt;<span class="text-blue-400">Portfolio</span>/&gt;</a>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="index.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">首页</a>
+          <a href="projects.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">项目</a>
+          <a href="about.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">关于我</a>
+          <a href="contact.html" class="nav-link text-gray-300 hover:text-white text-sm font-medium">联系方式</a>
+        </div>
+        <button id="menu-toggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none" aria-label="菜单">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="mobile-menu md:hidden bg-primary/98 border-t border-white/10">
+      <a href="index.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">首页</a>
+      <a href="projects.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">项目</a>
+      <a href="about.html" class="block px-6 py-3 text-gray-300 text-sm font-medium border-b border-white/5">关于我</a>
+      <a href="contact.html" class="block px-6 py-3 text-gray-300 text-sm font-medium">联系方式</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="pt-24 pb-8 sm:pt-32 sm:pb-12 px-4 bg-primary">
+    <div class="max-w-4xl mx-auto">
+      <nav class="flex items-center gap-2 text-sm text-gray-400 mb-4"><a href="projects.html" class="hover:text-white transition-colors">← 返回项目列表</a></nav>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">STM32 桌面终端</h1>
+      <p class="text-blue-200 text-sm sm:text-base max-w-2xl">STM32F103ZET6 + LVGL 图形界面 + ESP32 网络同步，128×128 TFT 屏实现「桌面时钟 + 环境监测 + 智能控制」一体化终端</p>
+      <div class="flex flex-wrap gap-2 mt-5">
+        <span class="tech-tag text-sm">STM32F103ZET6</span><span class="tech-tag text-sm">LVGL v8</span><span class="tech-tag text-sm">ESP32</span><span class="tech-tag text-sm">TFT LCD</span><span class="tech-tag text-sm">模拟 SPI</span><span class="tech-tag text-sm">DMA</span><span class="tech-tag text-sm">环形缓冲区</span><span class="tech-tag text-sm">PWM 调速</span><span class="tech-tag text-sm">软件 RTC</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 py-12 sm:py-16 space-y-16">
+
+    <!-- 1. 项目概述 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">1</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目概述</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <p class="mb-4">基于 <strong>STM32F103ZET6</strong> 微控制器与 <strong>LVGL v8.x</strong> 图形库的多功能桌面终端系统。通过 128×128 TFT 液晶屏提供可视化人机交互界面，集成温湿度检测、光线感应、LED 控制、风扇 PWM 调速、蜂鸣器告警、时间天气同步等功能。系统经 <strong>USART2 与 ESP32 模块通信</strong>，定时获取网络时间与天气信息，实现「桌面时钟 + 环境监测 + 智能控制」一体化终端。</p>
+        <h4 class="font-semibold text-slate-800 mb-2 mt-5">核心功能</h4>
+        <ul class="list-disc list-inside space-y-1">
+          <li><strong>LVGL 图形界面</strong>：开机动画（打字效果 + B 站 logo 弹跳 + 照片淡入）→ 登录界面（用户/密码 + 错误弹窗）→ TabView 四页主界面（Home / Led / Fan / Set）</li>
+          <li><strong>ESP32 网络同步</strong>：27 字节帧协议解析网络时间与天气（11 种天气代码），异或校验失败自动丢弃，DMA 内存搬运 22 字节数据</li>
+          <li><strong>软件 RTC 时钟</strong>：年月日时分秒走时 + 大小月/闰年自动处理，ESP32 自动校时 + Set 页手动调时</li>
+          <li><strong>模拟 SPI 高速刷屏</strong>：GPIO 位带操作直接置位/复位，刷屏 28 FPS（标准库方式仅 14 FPS）</li>
+          <li><strong>DHT22 温湿度</strong>：单总线 40 位数据解析 + 校验，2s 周期采集，失败保留上次值</li>
+          <li><strong>风扇 PWM 调速</strong>：H 桥方向控制（PE8/PE9）+ TIM PWM 占空比，0~100% 步进 10%，支持正反转</li>
+          <li><strong>自动灯光</strong>：光敏传感器 100ms 检测，AUTO（暗自动开）/ MANU（手动开关）双模式</li>
+          <li><strong>屏保防烧屏</strong>：30s 无操作进入屏保，时间标签左右往复平移动画，任意按键唤醒</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2. 硬件/系统架构 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">2</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">硬件架构 / 引脚分配</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <p class="text-slate-600 mb-5 leading-relaxed">主控 STM32F103ZET6（Cortex-M3 @ 72MHz，512KB Flash / 64KB RAM，LQFP144），外设通过 GPIO / 模拟 SPI / 单总线 / USART / PWM 接入，采用分层架构（应用层 → 中间件 LVGL → 硬件驱动层 → 通信层 → 系统层）：</p>
+        <div class="img-placeholder mb-6"><span>📷 系统硬件接线图 / 实物接线照片<br><small>（请替换为实际图片：终端整体 / TFT 屏显示效果）</small></span></div>
+        <h4 class="font-semibold text-slate-800 mb-3">外设清单与引脚分配</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead><tr class="bg-slate-50"><th class="border border-slate-200 px-4 py-2 text-left font-semibold">外设</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">接口/引脚</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">说明</th></tr></thead>
+            <tbody class="text-slate-600">
+              <tr><td class="border border-slate-200 px-4 py-2">TFT LCD</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">PB13 SCK / PB15 MOSI / PB10 DC / PB11 CS / PB12 RST / PB9 BLK</td><td class="border border-slate-200 px-4 py-2">128×128，RGB565，模拟 SPI</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">按键 KEY1~KEY4</td><td class="border border-slate-200 px-4 py-2">GPIO 输入</td><td class="border border-slate-200 px-4 py-2">4 独立按键，20ms 消抖</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">LED0 / LED1</td><td class="border border-slate-200 px-4 py-2">GPIO 输出</td><td class="border border-slate-200 px-4 py-2">2 路 LED 指示灯</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">蜂鸣器</td><td class="border border-slate-200 px-4 py-2">GPIO 输出</td><td class="border border-slate-200 px-4 py-2">有源蜂鸣器，按键提示音</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">DHT22</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">PA4（单总线）</td><td class="border border-slate-200 px-4 py-2">温湿度传感器，4.7k~10k 上拉</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">光敏传感器</td><td class="border border-slate-200 px-4 py-2">GPIO 输入</td><td class="border border-slate-200 px-4 py-2">数字量光线检测</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">直流电机（风扇）</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">PE8 / PE9 方向 + TIM PWM</td><td class="border border-slate-200 px-4 py-2">PWM 调速，支持正反转</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">USART2</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">PA2 (TX) / PA3 (RX)</td><td class="border border-slate-200 px-4 py-2">115200，与 ESP32 通信</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">DMA1 Channel</td><td class="border border-slate-200 px-4 py-2">内存到内存</td><td class="border border-slate-200 px-4 py-2">串口帧数据快速拷贝</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2">TIM1</td><td class="border border-slate-200 px-4 py-2">1ms 更新中断</td><td class="border border-slate-200 px-4 py-2">LVGL 时基 + 按键扫描</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-4 p-4 bg-amber-50 rounded-lg text-sm text-amber-800">
+          ⚠️ <strong>注意事项：</strong>风扇电机电源需独立供电，不与 STM32 3.3V 共用；DHT22 数据线必须外接上拉电阻；所有模块 GND 需共地。
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 核心技术实现 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">3</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">核心技术实现</h2></div>
+
+      <!-- 3.1 LVGL 图形界面 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.1 LVGL 图形界面设计</h3>
+        <p class="text-slate-600 leading-relaxed mb-4">基于 LVGL v8.x 构建完整 UI 流程，128×128 分辨率、单缓冲（10 行像素）、TIM1 1ms 提供时基，中文字体与图标资源以 C 数组形式编译进 Flash：</p>
+        <div class="code-block mb-4"><span class="lang-label">界面流程</span>
+<code>上电
+ ├─【开机动画】打字 "STM32F103ZET6" → 文字渐隐 → B站logo弹跳 → 照片淡入+信息栏展开 → 整体渐隐
+ ├─【登录界面】蓝色背景 + 用户名/密码输入框(全键盘/数字键盘) + FontAwesome 图标 + 密码错误弹窗
+ └─【主界面 TabView】4 页左右切换
+     ├─ Home：日期 / 时间 / 天气+室外温度 / 室内温湿度
+     ├─ Led ：模式 AUTO/MANU + 开关状态
+     ├─ Fan ：风速 0%~100%（40 号大字体）
+     └─ Set ：设置字段(HOUR/MIN/SEC) + 当前时间</code></div>
+        <div class="space-y-2 text-slate-600 text-sm">
+          <div><span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded mr-2">绘制缓冲</span>单缓冲 LCD_W × 10 行，disp_flush() 回调写 TFT</div>
+          <div><span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded mr-2">时基</span>TIM1 1ms 中断调用 lv_tick_inc(1)</div>
+          <div><span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded mr-2">动画</span>打字效果 / 渐隐(透明度 255→0) / 弹跳路径 / 蜂鸣器图标 90° 旋转 / 屏保往复平移</div>
+        </div>
+      </div>
+
+      <!-- 3.2 ESP32 串口通信协议 -->
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-bold text-slate-800 mb-3 text-lg">3.2 ESP32 串口通信协议（时间 + 天气同步）</h3>
+        <p class="text-slate-600 text-sm mb-4">USART2 115200 8N1，ESP32 每 10 分钟发送一帧 27 字节数据，STM32 端用状态机 + 环形缓冲区 + DMA 完成可靠接收：</p>
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full text-sm border-collapse">
+            <thead><tr class="bg-slate-50"><th class="border border-slate-200 px-4 py-2 text-left font-semibold">偏移</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">长度</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">内容</th><th class="border border-slate-200 px-4 py-2 text-left font-semibold">说明</th></tr></thead>
+            <tbody class="text-slate-600">
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[0]</td><td class="border border-slate-200 px-4 py-2">1</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">0xAA</td><td class="border border-slate-200 px-4 py-2">帧头</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[1]</td><td class="border border-slate-200 px-4 py-2">1</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">0x16 (22)</td><td class="border border-slate-200 px-4 py-2">数据区长度</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[2..11]</td><td class="border border-slate-200 px-4 py-2">10</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">日期 ASCII</td><td class="border border-slate-200 px-4 py-2">YYYY-MM-DD</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[12..19]</td><td class="border border-slate-200 px-4 py-2">8</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">时间 ASCII</td><td class="border border-slate-200 px-4 py-2">HH:MM:SS</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[20]</td><td class="border border-slate-200 px-4 py-2">1</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">天气代码</td><td class="border border-slate-200 px-4 py-2">0=晴…11=霾</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[21..23]</td><td class="border border-slate-200 px-4 py-2">3</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">温度 ASCII</td><td class="border border-slate-200 px-4 py-2">如 +25 / -03</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[24]</td><td class="border border-slate-200 px-4 py-2">1</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">校验和</td><td class="border border-slate-200 px-4 py-2">byte[1]~[23] 异或</td></tr>
+              <tr><td class="border border-slate-200 px-4 py-2 font-mono text-xs">[25..26]</td><td class="border border-slate-200 px-4 py-2">2</td><td class="border border-slate-200 px-4 py-2 font-mono text-xs">CRLF</td><td class="border border-slate-200 px-4 py-2">帧尾</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="space-y-2 text-slate-600 text-sm">
+          <div><span class="inline-block px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-semibold rounded mr-2">可靠性</span>128 字节环形缓冲区避免高波特率丢字节；校验失败自动丢弃回到等待帧头；校验通过 DMA 内存搬运 22 字节</div>
+        </div>
+      </div>
+
+      <!-- 3.3 模拟SPI + 3.4 软件RTC -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <h3 class="font-bold text-slate-800 mb-3 text-lg">3.3 模拟 SPI 高速刷屏</h3>
+          <div class="space-y-2 text-slate-600 text-sm leading-relaxed">
+            <p>LCD 驱动采用 <strong>GPIO 位带操作</strong>模拟 SPI 时序，直接操作 BSRR/BRR 寄存器置位/复位，避免标准库函数调用开销。</p>
+            <div class="p-3 bg-slate-50 rounded-lg"><span class="font-semibold text-slate-700">刷屏速率：</span>官方库 14 FPS → 位带操作 <strong class="text-accent">28 FPS</strong>（提升 2 倍）</div>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+          <h3 class="font-bold text-slate-800 mb-3 text-lg">3.4 软件 RTC + 屏保防烧屏</h3>
+          <div class="space-y-2 text-slate-600 text-sm leading-relaxed">
+            <p><strong>软件 RTC</strong>：rtc_time_t 结构体每秒递增，time_add_one_second() 自动处理大小月与闰年（能被 4 整除且不能被 100 整除，或能被 400 整除）。</p>
+            <p><strong>屏保</strong>：30s 无按键进入屏保，纯黑背景 + 大号时间，标签 X 轴 -20~+20 像素往复平移（1.5s 周期），防止 TFT 烧屏。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 开发难点 & 解决方案 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-sm">4</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">开发难点 & 解决方案</h2></div>
+      <div class="space-y-6">
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 1：LVGL 刷屏卡顿，界面不流畅</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>128×128 TFT 用标准库 GPIO 操作刷新，实测仅 14 FPS，开机动画明显卡顿</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>根因分析：</strong>标准库 GPIO_SetBits/ResetBits 每次调用都要经过函数调用与参数解析，而 SPI 时序每一位都需要一次 GPIO 翻转，函数开销被放大数百倍。</p>
+            <p><strong>解决方案：</strong>改用 <strong>位带操作</strong>（BITBAND），直接映射 BSRR/BRR 寄存器地址，一条指令完成置位/复位，跳过函数调用。配合 disp_flush 单缓冲 + 10 行分块刷新。</p>
+            <p class="mt-2"><strong>效果：</strong>刷屏速率从 14 FPS 提升至 28 FPS，动画流畅无卡顿。</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 2：高波特率串口接收丢字节</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>ESP32 以 115200 波特率发送 27 字节帧，STM32 主循环轮询接收偶发丢字节，导致校验失败、时间天气无法同步</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>解决方案：</strong></p>
+            <ul class="list-disc list-inside space-y-1 ml-2">
+              <li><strong>128 字节环形缓冲区</strong>：USART2 中断里只写入（RXNE 时取一字节入队），主循环非阻塞取出，中断与主循环分离，无需关中断</li>
+              <li><strong>帧解析状态机</strong>：RX_HEADER → RX_LEN → RX_DATA 三态，逐字节解析，校验失败自动回到等待帧头，不粘帧不误判</li>
+              <li><strong>DMA 内存搬运</strong>：校验通过后由 DMA 将 22 字节从 rx_buf 拷到 frame，不占用 CPU 周期</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 3：LVGL 时基被串口中断打断，计时不准</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>串口频繁接收时，LVGL 时基抖动，时钟走时与动画出现卡顿/跳秒</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>解决方案：</strong>NVIC 分组设为 Group 2（2 位抢占 + 2 位子优先级），<strong>TIM1 时基中断设最高抢占优先级(0,0)</strong>，USART2 设(1,1)。确保 1ms 时基中断永不被串口打断，保证 LVGL 计时准确。</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 border-l-4 border-l-orange-400">
+          <h3 class="font-bold text-slate-800 mb-2">难点 4：TFT 长时间显示固定内容易烧屏</h3>
+          <p class="text-sm text-slate-500 mb-3"><strong>现象：</strong>桌面终端常年显示时钟，固定像素长时间点亮会造成 TFT 液晶烧屏（残影）</p>
+          <div class="text-slate-600 leading-relaxed text-sm space-y-2">
+            <p><strong>解决方案：</strong>30 秒无按键操作自动进入屏保，时间标签以 1.5s 周期做 X 轴往复平移动画（LVGL 动画框架），使像素不固定在同一位置，有效避免烧屏。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. 演示素材 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">5</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">演示素材</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 mb-6">
+        <h3 class="font-semibold text-slate-800 mb-4">实物照片</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="img-placeholder rounded-lg"><span>📷 终端整体 / TFT 屏主界面显示效果<br><small>（请替换为实际实物照片）</small></span></div>
+          <div class="img-placeholder rounded-lg"><span>📷 开机动画 / 登录界面截图<br><small>（请替换为实际界面截图）</small></span></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200">
+        <h3 class="font-semibold text-slate-800 mb-4">运行演示视频</h3>
+        <div class="video-placeholder rounded-lg"><span class="flex flex-col items-center gap-2"><svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span>🎬 桌面终端运行演示（开机动画 + 界面切换 + 天气同步）<br><small>（请替换 src 或嵌入 B站 iframe）</small></span></span></div>
+      </div>
+    </section>
+
+    <!-- 6. 核心代码片段 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">6</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">核心代码片段</h2></div>
+
+      <!-- 代码1：环形缓冲区 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 serial.c — 串口环形缓冲区</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">C</span>
+<code>/* USART2 环形缓冲区：中断只写，主循环只读 */
+#define SERIAL_RX_SIZE  128
+static uint8_t  Serial_RxBuf[SERIAL_RX_SIZE];
+static volatile uint16_t Serial_RxWrite = 0;
+static volatile uint16_t Serial_RxRead  = 0;
+
+void USART2_IRQHandler(void)
+{
+    if (USART_GetITStatus(USART2, USART_IT_RXNE)) {
+        uint8_t ch  = USART_ReceiveData(USART2);
+        uint16_t next = (Serial_RxWrite + 1) % SERIAL_RX_SIZE;
+        if (next != Serial_RxRead) {          /* 未满才写入 */
+            Serial_RxBuf[Serial_RxWrite] = ch;
+            Serial_RxWrite = next;
+        }
+    }
+}
+
+uint8_t Serial_GetRxFlag(void)
+{ return Serial_RxWrite != Serial_RxRead; }
+
+uint8_t Serial_GetRxData(void)
+{
+    uint8_t ch = Serial_RxBuf[Serial_RxRead];
+    Serial_RxRead = (Serial_RxRead + 1) % SERIAL_RX_SIZE;
+    return ch;
+}</code></div>
+      </div>
+
+      <!-- 代码2：帧解析状态机 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 uart_service.c — 帧解析状态机</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">C</span>
+<code>/* ESP32 -> STM32 帧: 0xAA | 0x16(长度) | 22字节 | 校验 | CRLF */
+void uart_service(void)
+{
+    static uint8_t state = RX_HEADER;
+    static uint8_t idx = 0, len = 0;
+    static uint8_t frame[22];
+
+    while (Serial_GetRxFlag()) {
+        uint8_t ch = Serial_GetRxData();
+        switch (state) {
+        case RX_HEADER:
+            if (ch == 0xAA) state = RX_LEN;     /* 帧头匹配 */
+            break;
+        case RX_LEN:
+            len = ch; idx = 0; state = RX_DATA; /* 记录长度 */
+            break;
+        case RX_DATA:
+            if (idx < len) { frame[idx++] = ch; }
+            else {
+                if (ch == CalcChecksum(frame, len)) {
+                    MyDMA_Transfer();           /* DMA 搬运 */
+                    parse_packet();             /* 更新时钟/天气 */
+                }
+                state = RX_HEADER;              /* 回到等待帧头 */
+            }
+            break;
+        }
+    }
+}</code></div>
+      </div>
+
+      <!-- 代码3：模拟SPI位带操作 -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 LCD.c — 模拟 SPI 位带操作刷屏</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">C</span>
+<code>/* 位带操作模拟 SPI：直接操作 BSRR/BRR，28 FPS */
+#define LCD_SCK(x)   PBout(13) = x
+#define LCD_MOSI(x)  PBout(15) = x
+
+static void LCD_WriteByte(uint8_t dat)
+{
+    for (uint8_t i = 0; i < 8; i++) {
+        LCD_SCK(0);
+        LCD_MOSI((dat << i) & 0x80);   /* 先发高位 */
+        LCD_SCK(1);                    /* 上升沿锁存 */
+    }
+}
+
+void LCD_Color_Fill(uint16_t x0, uint16_t y0,
+                    uint16_t x1, uint16_t y1, uint16_t *color)
+{
+    LCD_SetWindow(x0, y0, x1, y1);
+    uint32_t n = (x1 - x0 + 1) * (y1 - y0 + 1);
+    while (n--) LCD_WriteData(*color++);
+}</code></div>
+      </div>
+
+      <!-- 代码4：LVGL TabView -->
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="px-6 py-3 bg-slate-100 border-b border-slate-200"><span class="text-sm font-semibold text-slate-700">📄 main.c — LVGL TabView 四页界面</span></div>
+        <div class="code-block rounded-none"><span class="lang-label">C</span>
+<code>/* LVGL 四页 TabView：Home / Led / Fan / Set */
+static void lv_ui_create(void)
+{
+    lv_obj_t *tv = lv_tabview_create(lv_scr_act(), LV_DIR_TOP, 28);
+    lv_obj_set_style_bg_color(tv, lv_color_hex(0x111111), 0);
+
+    lv_obj_t *tab_home = lv_tabview_add_tab(tv, "Home");
+    lv_obj_t *tab_led  = lv_tabview_add_tab(tv, "Led");
+    lv_obj_t *tab_fan  = lv_tabview_add_tab(tv, "Fan");
+    lv_obj_t *tab_set  = lv_tabview_add_tab(tv, "Set");
+
+    /* Home 页：日期 / 时间(20号字体) / 天气 / 温湿度 */
+    lv_ui_date_label = lv_label_create(tab_home);
+    lv_ui_time_label = lv_label_create(tab_home);
+    lv_obj_set_style_text_font(lv_ui_time_label,
+                               &lv_font_montserrat_20, 0);
+    /* ... */
+}</code></div>
+      </div>
+    </section>
+
+    <!-- 7. 项目总结 & 个人收获 -->
+    <section class="fade-in">
+      <div class="flex items-center gap-3 mb-6"><span class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">7</span><h2 class="text-xl sm:text-2xl font-bold text-slate-800">项目总结 & 个人收获</h2></div>
+      <div class="bg-white rounded-xl p-6 sm:p-8 shadow-sm border border-slate-200 leading-relaxed text-slate-600">
+        <h4 class="font-semibold text-slate-800 mb-3">项目成果</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li>基于 LVGL 构建完整 GUI（开机动画 + 登录 + 四页主界面），128×128 TFT 刷屏 28 FPS，动画流畅</li>
+          <li>ESP32 串口帧协议可靠同步网络时间与天气，校验失败自动丢弃，10 分钟周期自动校时</li>
+          <li>软件 RTC 时钟支持大小月/闰年，时间精确走时不掉秒</li>
+          <li>DHT22 温湿度、光敏自动灯光、风扇 PWM 调速、蜂鸣器告警多外设协同稳定运行</li>
+          <li>屏保往复动画有效避免 TFT 烧屏，支持长期无人值守</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">个人收获</h4>
+        <ul class="list-disc list-inside space-y-2 mb-6">
+          <li><strong>LVGL 图形界面开发：</strong>掌握了 LVGL 对象模型、动画框架、字体/图片资源集成、刷新回调与单缓冲机制</li>
+          <li><strong>通信协议设计：</strong>从帧结构定义、异或校验、状态机解析到环形缓冲区 + DMA，完整走通了可靠串口通信链路</li>
+          <li><strong>性能优化思维：</strong>通过位带操作将刷屏速率翻倍，理解了寄存器级优化对嵌入式性能的关键作用</li>
+          <li><strong>中断优先级设计：</strong>学会用抢占优先级保证时基中断不被打断，避免实时性抖动</li>
+          <li><strong>系统整合能力：</strong>将时钟、天气、温湿度、灯光、风扇、屏保等多功能整合为一体化终端</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3">后续改进方向</h4>
+        <ul class="list-disc list-inside space-y-2">
+          <li>改用 STM32 内部 RTC 或 DS3231 模块，实现掉电时间保持</li>
+          <li>扩展触摸面板（GT911/FT6236），替代物理按键实现触屏操作</li>
+          <li>增加 SD 卡 + FATFS，实现历史环境数据日志记录</li>
+          <li>利用工程内已有的 PID 模块，结合风扇与温度传感器实现闭环温控</li>
+        </ul>
+
+        <h4 class="font-semibold text-slate-800 mb-3 mt-5">文件结构</h4>
+        <div class="code-block text-xs"><span class="lang-label">项目文件</span>
+<code>User/
+├── main.c                  # 主程序 + 简化版 TabView UI
+├── stm32f10x_it.c          # 中断服务函数
+Hardware/
+├── LCD/                    # TFT 液晶屏驱动（模拟 SPI）
+├── DHT22/                  # 温湿度传感器驱动（单总线）
+├── Motor/                  # 直流电机（风扇）H 桥驱动
+├── PID/                    # PID 控制算法
+├── KEY/  LED/  Buzzer/  LightSensor/  PWM/
+Communication/
+├── Serial/                 # USART2 串口驱动（环形缓冲区）
+└── SPI/                    # 模拟 SPI 时序
+System/
+├── timer/  delay/  MyDMA/  sys/
+Middlewares/LVGL/
+├── GUI/lvgl/               # LVGL 源码 + lv_conf.h
+└── user_ui/                # 开机动画 + 登录界面 + 主界面 + 资源</code></div>
+      </div>
+    </section>
+
+    <div class="flex items-center justify-between pt-4 border-t border-slate-200 fade-in">
+      <a href="projects.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7 7"/></svg>返回项目列表</a>
+      <a href="project-butterfly.html" class="text-accent hover:text-accent-hover font-medium text-sm flex items-center gap-1 transition-colors">下一个项目<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+    </div>
+  </main>
+
+  <footer class="site-footer py-8 px-4 text-center"><p>&copy; 2026 陈明 — 嵌入式开发工程师作品集. Built with Tailwind CSS.</p></footer>
+  <button id="back-to-top" class="back-to-top" aria-label="回到顶部"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg></button>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -75,28 +75,28 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
 
-        <!-- ───── 项目 1: FreeRTOS 智能窗户温控系统 ───── -->
+        <!-- ───── 项目 1: STM32 桌面终端 ───── -->
         <div class="project-card fade-in">
           <div class="card-accent-bar"></div>
           <div class="p-6">
             <div class="w-14 h-14 rounded-lg bg-blue-50 flex items-center justify-center text-2xl mb-4">
-              🌡️
+              🖥️
             </div>
             <h3 class="text-lg font-bold text-slate-800 mb-2">
-              FreeRTOS 智能窗户温控系统
+              STM32 桌面终端
             </h3>
             <p class="text-sm text-slate-500 mb-4 leading-relaxed">
-              STM32F103 + FreeRTOS 双任务架构，整合 DHT22/OLED/蓝牙/舵机 7 大模块，4°C 滞回自动温控 + 手机蓝牙 AT 指令双模控制，配套 C++ 上位机
+              STM32F103ZET6 + LVGL 图形界面，128×128 TFT 屏集成时间天气同步、温湿度监测、风扇 PWM 调速、自动灯光与屏保，ESP32 串口校时
             </p>
             <div class="mb-5">
-              <span class="tech-tag">STM32F103</span>
-              <span class="tech-tag">FreeRTOS</span>
-              <span class="tech-tag">DHT22</span>
-              <span class="tech-tag">HC-08 蓝牙</span>
-              <span class="tech-tag">Flash 磨损均衡</span>
-              <span class="tech-tag">C++ 上位机</span>
+              <span class="tech-tag">STM32F103ZET6</span>
+              <span class="tech-tag">LVGL</span>
+              <span class="tech-tag">ESP32</span>
+              <span class="tech-tag">模拟 SPI</span>
+              <span class="tech-tag">DMA</span>
+              <span class="tech-tag">环形缓冲区</span>
             </div>
-            <a href="project-freertos.html"
+            <a href="project-terminal.html"
                class="inline-flex items-center gap-1 text-accent hover:text-accent-hover font-semibold text-sm transition-colors">
               查看详情
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

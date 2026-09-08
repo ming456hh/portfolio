@@ -1,4 +1,4 @@
-# 嵌入式开发实习生 · 个人作品集网站
+# 嵌入式开发工程师 · 个人作品集网站
 
 一个面向嵌入式岗位面试的静态个人作品集网站，使用 **HTML5 + Tailwind CSS + JavaScript** 构建，响应式设计，适配桌面端和移动端。纯静态网页，本地双击 HTML 即可预览，上传 GitHub Pages / Vercel 即生成公开链接。
 
@@ -13,7 +13,7 @@ portfolio/
 ├── about.html                  # 关于我页 — 学习路线、求职规划
 ├── contact.html                # 联系方式页 — 邮箱/手机/GitHub/微信
 ├── project-template.html       # 项目详情模板 — 复制此文件新建项目
-├── project-freertos.html       # FreeRTOS 智能窗户温控系统 详情
+├── project-terminal.html       # STM32 桌面终端 详情
 ├── project-butterfly.html      # 仿生蝴蝶 BLE 姿态控制 详情
 ├── project-3prs.html           # 3-PRS 并联雕刻机器人 详情
 ├── css/
@@ -262,7 +262,7 @@ GitHub Pages 会在 1-2 分钟内自动重新部署。如果使用网页上传�
 | 项目合集 | `projects.html` | 4 个项目的卡片式展示 |
 | 关于我 | `about.html` | 在校经历 + 成长时间线 + 求职规划 |
 | 联系方式 | `contact.html` | 邮箱/手机/GitHub/微信 + 联系建议 |
-| FreeRTOS 温控 | `project-freertos.html` | DHT22 + OLED + 蓝牙 + Flash + IWDG 全链路 |
+| STM32 桌面终端 | `project-terminal.html` | LVGL 界面 + ESP32 时间天气同步 + DHT22 + 风扇 PWM + 屏保 |
 | 仿生蝴蝶 | `project-butterfly.html` | MPU6050 + 互补滤波 + 串级 PID + BLE |
 | 3-PRS 机器人 | `project-3prs.html` | 运动学反解 + OpenCV + 三轴同步插补 |
 | 模板 | `project-template.html` | 复制此文件新增项目 |
